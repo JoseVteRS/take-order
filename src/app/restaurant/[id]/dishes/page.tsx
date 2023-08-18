@@ -61,7 +61,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
   }
 
   return (
-    <div className="px-5">
+    <div className="p-5">
 
       <form action={createDishe}>
         <input type="hidden" name="id" />

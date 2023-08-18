@@ -19,7 +19,7 @@ export const Counter = ({ price }: { price: number }) => {
     }
 
     return (
-        <div>
+        <div className="">
             <div className="flex items-center justify-between gap-3 bg-neutral-200 rounded w-fit px-3 mb-2">
                 <button onClick={handleMinus}> <Minus size={16} /> </button>
                 <span>{counter}</span>
@@ -30,7 +30,6 @@ export const Counter = ({ price }: { price: number }) => {
 
             <div>
                 <Button className="w-full" > Añadir al pedido • {normalizePrice(price * counter)}€ </Button >
-
             </div>
         </div>
 

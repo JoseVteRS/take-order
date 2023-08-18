@@ -26,7 +26,7 @@ async function createRestaurant(data: FormData) {
 
 export default async function RestaurantCreatePage() {
     return (
-        <div>
+        <div >
             <h1 className="text-xl mb-3 text-center">Registra restaurante</h1>
             <div className="max-w-[200px] mx-auto">
                 <form action={createRestaurant}>
