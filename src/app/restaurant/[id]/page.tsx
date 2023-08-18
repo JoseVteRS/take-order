@@ -1,5 +1,7 @@
+import { Button } from "@/components/ui/button";
+import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { } from "next/navigation";
+import { notFound } from "next/navigation";
 
 type Props = {
     params: {
@@ -9,16 +11,53 @@ type Props = {
 
 export default async function RestaurantDetailPage({ params }: Props) {
 
+    const dishes = await prisma.dishe.findMany({
+        where: {
+            restaurantId: params.id
+        }
+    })
+
+    const categories = await prisma.category.findMany({
+        where: {
+            restaurantId: params.id
+        }
+    })
+
+    if (!dishes) { return notFound() }
+
 
     return (
-        <div>
-            <nav>
+        <div className="p-4">
+            <nav className="mb-4">
                 <ul>
                     <li>
-                        <Link href={`/restaurant/${params.id}/dishes`}  >Platos</Link>
+                        <Link className="border rounded-full px-2 py-1 text-xs" href={`/restaurant/${params.id}/dishes`}>Platos</Link>
                     </li>
                 </ul>
             </nav>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="border rounded p-4" >
+                    <div className="flex items-center gap-2 justify-around">
+                        <span className="block font-bold text-lg">Platos</span>
+                        <p className="text-xl">{dishes.length}</p>
+                    </div>
+                    <Button asChild className="w-full mt-2" variant="outline">
+                        <Link href={`http://localhost:3000/restaurant/${params.id}/dishes`}>Crear Plato</Link>
+                    </Button>
+                </div>
+
+                <div className="border rounded p-4" >
+                    <div className="flex items-center gap-2 justify-around">
+                        <span className="block font-bold text-lg">Categorias</span>
+                        <p className="text-xl">{categories.length}</p>
+                    </div>
+                    <Button asChild className="w-full mt-2" variant="outline">
+                        <Link href={`http://localhost:3000/restaurant/${params.id}/categories`}>Crear Categoria</Link>
+                    </Button>
+                </div>
+            </div>
+    
         </div>
     );
 }

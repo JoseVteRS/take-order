@@ -10,7 +10,7 @@ type Props = {
     }
 }
 
-export default async function RestaurantLayout({
+export default async function RestaurantItemLayout({
     children,
     params
 }: Props) {

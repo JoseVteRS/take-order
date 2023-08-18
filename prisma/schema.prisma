@@ -11,29 +11,32 @@ datasource db {
 }
 
 model Tenant {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String?
-  plan      String?  @default("FREE")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  plan      String?   @default("FREE")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
   users     User[]
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String    @id @default(uuid())
+  email     String    @unique
   name      String?
   avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
   tenantId  String
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
 }
 
 model Restaurant {
-  id     String  @id @default(uuid())
-  name   String
-  dishes Dishe[]
+  id         String     @id @default(uuid())
+  name       String
+  dishes     Dishe[]
+  categories Category[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?  @updatedAt
 }
 
 model Dishe {
@@ -43,4 +46,19 @@ model Dishe {
   price        Int         @default(0)
   restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId String?
+  category     Category?   @relation(fields: [categoryId], references: [id])
+  categoryId   String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
+}
+
+model Category {
+  id           String     @id @default(uuid())
+  name         String
+  description  String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  dishes       Dishe[]
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
 }

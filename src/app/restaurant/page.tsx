@@ -11,7 +11,7 @@ export default async function RestaurantsPage() {
 
   return (
     <div>
-      <h1>Restaurants de Jose</h1>
+      <h1 className="font-bold mb-3 text-center">Restaurants</h1>
 
       {
         !restaurants || restaurants.length === 0 ? (
