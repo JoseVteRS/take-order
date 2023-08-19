@@ -152,7 +152,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
           <SelectContent>
             {
               categories.map(category => (
-                <SelectItem value={category.id}>{category.name}</SelectItem>
+                <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
               ))
             }
           </SelectContent>
@@ -176,7 +176,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
           <TableBody>
             {
               dishes.map(dish => (
-                <DisheRow dish={dish} params={params} />
+                <DisheRow key={dish.id} dish={dish} params={params} />
               ))
             }
           </TableBody>

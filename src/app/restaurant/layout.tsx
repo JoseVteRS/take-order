@@ -5,7 +5,8 @@ export default function RestaurantLayout({
     children: React.ReactNode;
 }) {
     return (
-        <section className="">
+        <section className="md:container md:mx-container">
+            
             {children}
         </section>
     );

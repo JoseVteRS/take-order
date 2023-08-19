@@ -6,6 +6,14 @@ export default function Home() {
     <main className="min-h-screen">
       <h1 className="text-xl">TakeOrder</h1>
       <Button variant="default" asChild><Link href='/restaurant/create'>Dar de alta mi restaurante</Link></Button>
+
+      <nav>
+        <ul>
+          <li>
+            <Link href='/restaurant/'>Ver restaurantes</Link>
+          </li>
+        </ul>
+      </nav>
     </main>
   )
 }

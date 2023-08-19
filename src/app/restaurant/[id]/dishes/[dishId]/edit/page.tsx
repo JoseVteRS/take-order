@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 type Param = {
     params: { id: string, dishId: string }
@@ -15,6 +16,12 @@ export default async function RestaurantDisheEditPage({ params }: Param) {
             id: params.dishId,
             restaurantId: params.id
         },
+    })
+
+    const categories = await prisma.category.findMany({
+        where: {
+            restaurantId: params.id
+        }
     })
 
 
@@ -33,10 +40,12 @@ export default async function RestaurantDisheEditPage({ params }: Param) {
                 name,
                 description,
                 price: parseFloat(price) * 100,
+                categoryId: data.get('category') as string
             }
         })
 
         revalidatePath(`restaurant/${params.id}/dishes`)
+        redirect(`restaurant/${params.id}/dishes`)
     }
 
     if (!dish) {
@@ -50,6 +59,18 @@ export default async function RestaurantDisheEditPage({ params }: Param) {
                 <Input type="text" className="mb-3" name="name" defaultValue={dish.name} />
                 <Input type="text" className="mb-3" name="description" defaultValue={dish.description || ''} />
                 <Input type="number" className="mb-3" step={0.01} name="price" defaultValue={dish.price / 100} />
+                <Select name="category" defaultValue={dish.categoryId || ''}>
+                    <SelectTrigger className="mb-2 w-full">
+                        <SelectValue placeholder="Categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {
+                            categories.map(category => (
+                                <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                            ))
+                        }
+                    </SelectContent>
+                </Select>
                 <Button type="submit">Actualizar</Button>
             </form>
         </div>
