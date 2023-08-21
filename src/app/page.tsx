@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { getUserSession } from "@/lib/auth";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 
 const links = [
@@ -19,9 +17,9 @@ const links = [
 export default async function Home() {
   const user = await getUserSession()
 
-  if (!user) {
-    redirect("/auth/signin")
-  }
+
+  console.log('USER', user)
+
 
   return (
     <main className="min-h-screen">
@@ -48,7 +46,7 @@ export default async function Home() {
             }
           </ul>
           <div>
-            {user.name}
+            Username
           </div>
         </nav>
       </header>

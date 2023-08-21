@@ -10,10 +10,7 @@ type Props = {
     }
 }
 
-export default async function RestaurantItemLayout({
-    children,
-    params
-}: Props) {
+export default async function RestaurantItemLayout({ children, params }: Props) {
 
     const restaurantInfo = await prisma.restaurant.findFirst({
         where: {

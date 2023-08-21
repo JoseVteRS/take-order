@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 
 const NoRestaurants = () => {
@@ -24,7 +23,7 @@ export default async function RestaurantsPage() {
 
   const restaurants = await prisma.restaurant.findMany()
 
-  console.log(restaurants);
+
 
 
   return (

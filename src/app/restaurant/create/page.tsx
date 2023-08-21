@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getUserSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
@@ -8,26 +7,18 @@ import { redirect } from "next/navigation";
 async function createRestaurant(data: FormData) {
     'use server'
 
-    const user = await getUserSession()
-    try {
-        const name = data.get('name') as string
-        if (!name || name === '') {
-            return
-        }
-        await prisma.restaurant.create({
-            data: {
-                name,
-                user: {
-                    connect: {
-                        id: user.id
-                    }
-                }
-            }
-        })
-        redirect('/')
-    } catch (error: any) {
-        console.log('Error inesperado al crear un restaurante ERR_RESTAURANT_CREATE', error.message)
+    const name = data.get('name') as string
+    if (!name || name === '') {
+        return
     }
+    await prisma.restaurant.create({
+        data: {
+            name,
+            tenantId: 'c923e53b-7a6c-4260-9af6-7ad3d37275f1',
+            userId: '0eedefb1-6102-494d-9819-20f77a034dff'
+        }
+    })
+    redirect('/restaurant')
 
 }
 

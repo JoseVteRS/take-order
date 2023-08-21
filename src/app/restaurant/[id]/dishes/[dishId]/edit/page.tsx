@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
@@ -40,6 +41,7 @@ export default async function RestaurantDisheEditPage({ params }: Param) {
                 name,
                 description,
                 price: parseFloat(price) * 100,
+                active: data.get('active') === "on",
                 categoryId: data.get('category') as string
             }
         })
@@ -71,6 +73,10 @@ export default async function RestaurantDisheEditPage({ params }: Param) {
                         }
                     </SelectContent>
                 </Select>
+                <div className="flex items-center gap-3 mt-3 mb-6">
+                    <p className="font-semibold">Ocultar / Mostrar</p>
+                    <Switch defaultChecked={dish.active} name="active" />
+                </div>
                 <Button type="submit">Actualizar</Button>
             </form>
         </div>

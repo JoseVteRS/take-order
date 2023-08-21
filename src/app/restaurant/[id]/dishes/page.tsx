@@ -1,13 +1,3 @@
-import { QRCode } from "@/components/qr-code";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -21,10 +11,11 @@ import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
 import { Category, Dishe } from "@prisma/client";
 import { Pen, Trash } from "lucide-react";
-import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { VisibilitySwitch } from "./[dishId]/active";
+
 
 
 type DishItemProps = {
@@ -32,7 +23,8 @@ type DishItemProps = {
     category: Category | null;
   } & Dishe
   params: {
-    id: string
+    id: string,
+    dishId: string
   }
 }
 
@@ -58,18 +50,39 @@ const Dishe = ({ dish, params }: DishItemProps) => {
   )
 }
 
+
+
 const DisheRow = ({ dish, params }: DishItemProps) => {
+  async function changeVisibilityDish(data: FormData) {
+    'use server'
+    await prisma.dishe.update({
+      where: {
+        id: data.get('dish-id') as string
+      },
+      data: {
+        active: (data.get('active') === "on")
+      }
+    })
+  }
+
+
+
+
+
   return (
     <TableRow>
       <TableCell className="relative h-[60px] w-[60px]">
         <div className="rounded-sm overflow-hidden w-[60px] h-[60px] relative">
-          <Image alt="asdf" src="/pizza.jpg" height={60} width={60} className="object-cover absolute min-h-full" />
+          <img alt="asdf" src="/pizza.jpg" height={60} width={60} className="object-cover absolute min-h-full" />
         </div>
       </TableCell>
       <TableCell>{dish.name}</TableCell>
       <TableCell className="text">{dish.description}</TableCell>
       <TableCell>{dish.category?.name}</TableCell>
       <TableCell>{normalizePrice(dish.price)}€</TableCell>
+      <TableCell className="text-center">
+        <VisibilitySwitch visibility={dish.active} id={dish.id} />
+      </TableCell>
       <TableCell>
         <div className="flex gap-2">
           <Link href={`/restaurant/${params.id}/dishes/${dish.id}/edit`}>
@@ -126,13 +139,14 @@ export default async function RestaurantDishesPage({ params }: Props) {
               <TableHead>Descripción</TableHead>
               <TableHead>Categoria</TableHead>
               <TableHead>Precio</TableHead>
+              <TableHead className="text-center">Ocultar/Mostrar</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {
               dishes.map(dish => {
-                console.log('Dish', dish)
+
                 return (
                   <DisheRow key={dish.id} dish={dish} params={params} />
                 )
@@ -141,9 +155,6 @@ export default async function RestaurantDishesPage({ params }: Props) {
           </TableBody>
         </Table>
       </div>
-
-
-
     </div>
   );
 }

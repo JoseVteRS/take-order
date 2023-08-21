@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -15,9 +15,7 @@ type Props = {
 
 
 
-export default async function RestaurantDishesLayout({
-  children, params
-}: Props) {
+export default async function RestaurantDishesLayout({ children, params }: Props) {
 
   async function createDishe(data: FormData) {
     'use server'
@@ -70,7 +68,7 @@ export default async function RestaurantDishesLayout({
       <div className="flex items-start justify-between gap-8">
         <div className="w-4/12">
           <div className="mb-10">
-          <h3 className="text-xl mb-2">Añadir plato</h3>
+            <h3 className="text-xl mb-2">Añadir plato</h3>
             <form action={createDishe}>
               <input type="hidden" name="id" />
               <Input type="text" name="name" placeholder="Nombre del palto" className="mb-2" />
