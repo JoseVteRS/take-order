@@ -1,6 +1,7 @@
 import { GoBack } from "@/components/go-back";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { NavRestaurante } from "./dishes/menu";
 
 
 type Props = {
@@ -30,7 +31,7 @@ export default async function RestaurantItemLayout({ children, params }: Props) 
                     <h1 className="text-2xl text-center flex-grow">{restaurantInfo.name}</h1>
                 </div>
             </header>
-
+            <NavRestaurante id={params.id} />
             {children}
 
 

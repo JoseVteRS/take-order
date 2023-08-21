@@ -3,6 +3,9 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+
+
+
 type Props = {
     params: {
         id: string
@@ -10,6 +13,8 @@ type Props = {
 }
 
 export default async function RestaurantDetailPage({ params }: Props) {
+
+
 
     const dishes = await prisma.dishe.findMany({
         where: {
@@ -28,14 +33,6 @@ export default async function RestaurantDetailPage({ params }: Props) {
 
     return (
         <div className="p-4">
-            <nav className="mb-4">
-                <ul>
-                    <li>
-                        <Link className="border rounded-full px-2 py-1 text-xs" href={`/restaurant/${params.id}/dishes`}>Platos</Link>
-                    </li>
-                </ul>
-            </nav>
-
             <div className="grid grid-cols-2 gap-4">
                 <div className="border rounded p-4" >
                     <div className="flex items-center gap-2 justify-around">
@@ -56,8 +53,8 @@ export default async function RestaurantDetailPage({ params }: Props) {
                         <Link href={`http://localhost:3000/restaurant/${params.id}/categories`}>Crear Categoria</Link>
                     </Button>
                 </div>
-            </div>
-    
+                NavRestaurante</div>
+
         </div>
     );
 }
