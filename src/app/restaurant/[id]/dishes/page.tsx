@@ -105,6 +105,7 @@ const DisheRow = ({ dish, params }: DishItemProps) => {
 type Props = {
   params: {
     id: string
+    dishId: string
   }
 }
 
