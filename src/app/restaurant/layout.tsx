@@ -6,7 +6,6 @@ export default function RestaurantLayout({
 }) {
     return (
         <section className="md:container md:mx-container">
-            
             {children}
         </section>
     );

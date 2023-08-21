@@ -26,8 +26,8 @@ export default async function RestaurantDishDetailPage({ params }: Props) {
 
     return (
         <section className="h-[55vh]">
-            <header className="relative min-h-[150px]">
-                <img src="/pizza.jpg" alt="pizza" className="w-full object-cover min-h-[150px]" />
+            <header className="relative">
+                <img src="/pizza.jpg" alt="pizza" className="w-full object-cover h-[300px]" />
             </header>
 
             <div className="px-2 flex flex-col justify-between h-full">
@@ -36,15 +36,7 @@ export default async function RestaurantDishDetailPage({ params }: Props) {
                     <p className="font-semibold text-xl">{normalizePrice(dish.price)}{' '}€</p>
                     <p className="text-neutral-600 text-sm">{dish.description}</p>
                 </div>
-
-
-                <div className="mt-4">
-                    <Counter price={dish.price} />
-                </div>
             </div>
-
-
-
         </section>
     );
 }

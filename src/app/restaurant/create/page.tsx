@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getUserSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 
 async function createRestaurant(data: FormData) {
     'use server'
+
+    const user = await getUserSession()
     try {
         const name = data.get('name') as string
         if (!name || name === '') {
@@ -13,7 +16,12 @@ async function createRestaurant(data: FormData) {
         }
         await prisma.restaurant.create({
             data: {
-                name
+                name,
+                user: {
+                    connect: {
+                        id: user.id
+                    }
+                }
             }
         })
         redirect('/')

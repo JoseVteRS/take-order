@@ -33,7 +33,10 @@ export default async function RestaurantItemLayout({
                     <h1 className="text-2xl text-center flex-grow">{restaurantInfo.name}</h1>
                 </div>
             </header>
+
             {children}
+
+
         </div>
     );
 }
