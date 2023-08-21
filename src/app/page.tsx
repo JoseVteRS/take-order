@@ -1,19 +1,63 @@
 import { Button } from "@/components/ui/button";
+import { getUserSession } from "@/lib/auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+
+const links = [
+  {
+    href: '/',
+    label: 'Inicio'
+  },
+  {
+    href: '/restaurant',
+    label: 'Restaurante'
+  },
+]
+
+
+export default async function Home() {
+  const user = await getUserSession()
+
+  if (!user) {
+    redirect("/auth/signin")
+  }
+
   return (
     <main className="min-h-screen">
-      <h1 className="text-xl">TakeOrder</h1>
-      <Button variant="default" asChild><Link href='/restaurant/create'>Dar de alta mi restaurante</Link></Button>
+      <header>
+        <h1 className="text-3xl font-bold text-center">TakeOrder</h1>
+        <nav className="mt-10">
+          <ul className="flex gap-3 items-center justify-center">
+            {
+              !user && (<li>
+                <Link href="/auth/signin">
+                  Register
+                </Link>
+              </li>)
+            }
 
-      <nav>
-        <ul>
-          <li>
-            <Link href='/restaurant/'>Ver restaurantes</Link>
-          </li>
-        </ul>
-      </nav>
-    </main>
+            {
+              links.map(({ href, label }) => (
+                <li key={href}>
+                  <Link href={href}>
+                    {label}
+                  </Link>
+                </li>
+              ))
+            }
+          </ul>
+          <div>
+            {user.name}
+          </div>
+        </nav>
+      </header>
+      <div>
+
+
+
+
+      </div>
+    </main >
   )
 }
