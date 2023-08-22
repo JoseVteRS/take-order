@@ -34,13 +34,9 @@ export default async function RestaurantsPage() {
     redirect(`/admin/restaurant/${restaurants[0].id}`)
   }
 
-  console.log(restaurants[0]);
-  
 
   return (
     <div className="mx-auto container py-4">
-
-      asdf
       {<Blankslate />}
     </div>
   );

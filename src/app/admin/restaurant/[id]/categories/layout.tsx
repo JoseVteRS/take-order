@@ -30,24 +30,25 @@ export default function RestauranteCategoriesLayout({
         revalidatePath(`/restaurant/${params.id}/categories`)
     }
     return (
-        <section >
+        <section className="px-10" >
 
-            <h2 className="text-2xl text-center my-8">Platos</h2>
+            <h2 className="text-2xl my-8">Categorias</h2>
 
             <div className="flex items-start justify-between gap-8">
-                <div className="w-4/12">
-                    {children}
-                </div>
 
-                <div className="w-8/12">
+                <div className="w-3/12">
                     <div className="mb-10">
-                        <h3 className="text-xl mb-2">Añadir categoria</h3>
+                        <h3 className="text-xl mb-2">Añadir nueva categoria</h3>
                         <form action={createCategory}>
                             <Input type="text" name="categoryName" placeholder="Nombre" className="mb-2" />
                             <Input type="text" name="categoryDescription" placeholder="Description" className="mb-2" />
                             <Button>Guardar Categoria</Button>
                         </form>
                     </div>
+                </div>
+
+                <div className="w-9/12">
+                    {children}
                 </div>
             </div>
 

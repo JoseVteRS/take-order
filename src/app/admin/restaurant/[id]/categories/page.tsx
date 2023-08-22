@@ -1,4 +1,16 @@
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import prisma from "@/lib/prisma";
+import { Pen, Trash } from "lucide-react";
+import Link from "next/link";
+
 
 type Props = {
   params: {
@@ -15,21 +27,43 @@ export default async function RestaurantCategoriesPage({ params }: Props) {
   })
 
   return (
-    <div className="p-5" >
-      <ul className="flex flex-col gap-4">
+    <Table>
+      <TableCaption>Categorias</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Nombre</TableHead>
+          <TableHead>Fecha</TableHead>
+          <TableHead>Acciones</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {
-          categories.map(category => (
+          categories.map(cat => (
+            <TableRow key={cat.id}>
+              <TableCell >{cat.name}</TableCell>
+              <TableCell>{new Intl.DateTimeFormat().format(cat.createdAt)}</TableCell>
 
-            <li key={category.id}  >
-              {category.name} 
-              {
-                category.description && (<span className="text-neutral-400 text-sm block">{category.description}</span>)
-              }
+              <TableCell>
+                <div className="flex gap-2">
+                  <Link href={`/restaurant/${params.id}/categories/${cat.id}/edit`}>
+                    <Pen size={16} />
+                  </Link>
+                  <button className="text-red-500">
+                    <Trash size={16} />
+                  </button>
+                  <Link href={`/restaurant/${params.id}/categories/${cat.id}`}>
+                    Visitar
+                  </Link>
+                </div>
 
-            </li>
+              </TableCell>
+
+
+            </TableRow>
           ))
         }
-      </ul>
-    </div>
+
+      </TableBody>
+    </Table>
   );
 }
