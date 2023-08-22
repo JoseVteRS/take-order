@@ -2,7 +2,10 @@ import { User, getServerSession } from 'next-auth'
 
 export const session = async ({ session, token }: any) => {
   session.user.id = token.id
-  session.user.tenant = token.tenant
+  session.user.tenant.id = token.tenant
+
+  console.log('SESSION', {session, token})
+
   return session
 }
 

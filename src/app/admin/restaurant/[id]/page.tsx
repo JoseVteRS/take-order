@@ -14,8 +14,6 @@ type Props = {
 
 export default async function RestaurantDetailPage({ params }: Props) {
 
-
-
     const dishes = await prisma.dishe.findMany({
         where: {
             restaurantId: params.id
@@ -53,7 +51,7 @@ export default async function RestaurantDetailPage({ params }: Props) {
                         <Link href={`http://localhost:3000/restaurant/${params.id}/categories`}>Crear Categoria</Link>
                     </Button>
                 </div>
-                NavRestaurante</div>
+            </div>
 
         </div>
     );

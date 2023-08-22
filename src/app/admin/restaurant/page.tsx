@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-
-const NoRestaurants = () => {
+const Blankslate = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-sky-100 rounded p-5">
       <div className="mb-5 text-center" >
@@ -21,28 +21,27 @@ const NoRestaurants = () => {
 
 export default async function RestaurantsPage() {
 
-  const restaurants = await prisma.restaurant.findMany()
+  const restaurants = await prisma.restaurant.findMany({
+    where: {
+      tenantId: "c923e53b-7a6c-4260-9af6-7ad3d37275f1",
+    },
+    orderBy: {
+      createdAt: "asc"
+    }
+  })
 
+  if (restaurants.length > 0) {
+    redirect(`/admin/restaurant/${restaurants[0].id}`)
+  }
 
-
+  console.log(restaurants[0]);
+  
 
   return (
-    <div>
-      <h1 className="text-4xl mb-3 text-center">Restaurants</h1>
+    <div className="mx-auto container py-4">
 
-      {
-        !restaurants || restaurants.length === 0 ? (<NoRestaurants />)
-          : (
-            <ul>
-              {restaurants.map(restaurant => (
-                <li key={restaurant.id}>
-                  <Link href={`/restaurant/${restaurant.id}`}>{restaurant.name}</Link>
-                </li>
-              ))}
-            </ul>
-          )
-      }
-
+      asdf
+      {<Blankslate />}
     </div>
   );
 }

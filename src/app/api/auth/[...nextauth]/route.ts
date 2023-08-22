@@ -22,21 +22,17 @@ const nextOptions: NextAuthOptions = {
 
       //@ts-ignore
       async authorize(credentials) {
-        if (!credentials) return null
+        if (!credentials) throw new Error('No credentials')
 
-        const user = await prisma.user.findUnique({ where: { email: credentials.email } })
-
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email
+          }
+        })
         if (!user || !user.password) throw new Error('Correo y Contraseña son obligatorios')
-
         const verifiedPassword = verifySha512(credentials.password, user.password)
-
-
-        if (!verifiedPassword) return null
-
-        return {
-          name: user.name,
-          email: user.email,
-        }
+        if (!verifiedPassword) throw new Error('No user')
+        return user
       }
 
     })
@@ -46,7 +42,6 @@ const nextOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60 // 30 Days
   },
-
 
   callbacks: {
     // async signIn({ account, profile }) {
@@ -76,17 +71,10 @@ const nextOptions: NextAuthOptions = {
     //   return true
     // },
     session,
-    async jwt({ token, user, account, profile }) {
-      console.log('JWT Callback', { token, user })
-      if (user) {
-        const u = user as unknown as any
-        return {
-          ...token,
-          id: u.id,
-        }
-      }
-      return token
-    }
+    async jwt({ token, user }) {
+      console.log('JWT', { token, user })
+      return { ...token, ...user };
+    },
   },
   debug: process.env.NODE_ENV === 'development',
 }

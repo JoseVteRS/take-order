@@ -17,7 +17,6 @@ import { notFound } from "next/navigation";
 import { VisibilitySwitch } from "./[dishId]/active";
 
 
-
 type DishItemProps = {
   dish: {
     category: Category | null;

@@ -58,15 +58,20 @@ export default async function RestaurantDishesLayout({ children, params }: Props
     }
   })
 
-
-
   return (
-    <section >
-
-      <h2 className="text-2xl text-center my-8">Platos</h2>
+    <section className="my-10 mx-5" >
+      <header className="flex items-center gap-3">
+        <h2 className="text-2xl">Platos</h2>
+        <Button variant="outline">Nuevo plato</Button>
+      </header>
 
       <div className="flex items-start justify-between gap-8">
-        <div className="w-4/12">
+
+        <div className="w-10/12">
+          {children}
+        </div>
+
+        <div className="w-2/12">
           <div className="mb-10">
             <h3 className="text-xl mb-2">Añadir plato</h3>
             <form action={createDishe}>
@@ -105,9 +110,7 @@ export default async function RestaurantDishesLayout({ children, params }: Props
 
         </div>
 
-        <div className="w-8/12">
-          {children}
-        </div>
+
       </div>
 
     </section>

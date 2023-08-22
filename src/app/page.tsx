@@ -17,10 +17,6 @@ const links = [
 export default async function Home() {
   const user = await getUserSession()
 
-
-  console.log('USER', user)
-
-
   return (
     <main className="min-h-screen">
       <header>
