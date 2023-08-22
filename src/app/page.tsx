@@ -50,12 +50,6 @@ export default async function Home() {
           </div>
         </nav>
       </header>
-      <div>
-
-
-
-
-      </div>
     </main >
   )
 }

@@ -7,7 +7,6 @@ import { useState } from "react";
 
 export function VisibilitySwitch({ visibility, id }: { visibility: boolean, id: string }) {
 
-
     const [isVisible, setIsVisible] = useState(visibility)
 
     const handleChange = async () => {
