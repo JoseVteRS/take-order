@@ -29,7 +29,7 @@ export const NavAdminAside = ({ id }: { id: string }) => {
     return (
         <nav className="p-1">
             <div className="mt-2">
-                <h2 className="font-bold text-lg text-neutral-900" >{restaurant?.name ? restaurant.name : 'Restaurante'}</h2>
+                <h2 className="font-bold text-lg text-neutral-900" >{(restaurant && restaurant?.name) ? restaurant.name : 'Restaurante'}</h2>
             </div>
             <Separator className="my-5" />
             <ul className="flex flex-col items-start gap-1">

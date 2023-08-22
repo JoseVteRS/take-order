@@ -1,8 +1,13 @@
 import { Restaurant } from "@prisma/client";
 import { useEffect, useState } from "react"
 
-export const useRestaurant = (id: string) => {
-    if (!id) return;
+type Return = {
+    loading: boolean,
+    restaurant: Restaurant | []
+}
+
+export const useRestaurant = (id: string): Return => {
+    if (!id) { return { loading: false, restaurant: [] } };
 
     const [restaurantList, setRestaurantList] = useState<Restaurant>()
     const [loading, setLoading] = useState<boolean>(false)
@@ -24,7 +29,7 @@ export const useRestaurant = (id: string) => {
 
     return {
         loading,
-        restaurant: restaurantList
+        restaurant: restaurantList || []
     }
 
 }
