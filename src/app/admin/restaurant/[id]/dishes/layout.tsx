@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import prisma from "@/lib/prisma";
+import { Category } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 
@@ -15,7 +16,7 @@ type Props = {
 
 
 
-export default async function RestaurantDishesLayout({ children, params }: Props) {
+const Aside = ({ id, categories }: { id: string, categories: Category[] }) => {
 
   async function createDishe(data: FormData) {
     'use server'
@@ -29,13 +30,14 @@ export default async function RestaurantDishesLayout({ children, params }: Props
         name: data.get('name') as string,
         description: data.get('description') as string,
         price: (parsePrice * 100),
-        restaurantId: params.id,
+        restaurantId: id,
         categoryId: category
       }
     })
 
-    revalidatePath(`/restaurant/${params.id}/dishes`)
+    revalidatePath(`/restaurant/${id}/dishes`)
   }
+
 
   async function createCategory(data: FormData) {
     'use server'
@@ -44,13 +46,57 @@ export default async function RestaurantDishesLayout({ children, params }: Props
       data: {
         name: data.get('categoryName') as string,
         description: data.get('categoryDescription') as string,
-        restaurantId: params.id
+        restaurantId: id
       }
     })
 
-    revalidatePath(`/restaurant/${params.id}/dishes`)
+    revalidatePath(`/restaurant/${id}/dishes`)
   }
 
+
+  return (
+    <>
+      <div className="mb-10">
+        <h3 className="text-xl mb-2">Añadir plato</h3>
+        <form action={createDishe}>
+          <input type="hidden" name="id" />
+          <Input type="text" name="name" placeholder="Nombre del palto" className="mb-2" />
+          <Input type="text" name="description" placeholder="Description breve del plato" className="mb-2" />
+          <Input type="number" step={0.01} min={0} name="price" placeholder="Precio" className="mb-2" />
+
+          <Select name="category">
+            <SelectTrigger className="mb-2 w-full">
+              <SelectValue placeholder="Categoria" />
+            </SelectTrigger>
+            <SelectContent>
+              {
+                categories.map(category => (
+                  <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                ))
+              }
+            </SelectContent>
+          </Select>
+
+          <Button>Guardar Plato</Button>
+        </form>
+      </div>
+
+      <div className="mb-10">
+        <h3 className="text-xl mb-2">Añadir categoria</h3>
+        <form action={createCategory}>
+          <Input type="text" name="categoryName" placeholder="Nombre" className="mb-2" />
+          <Input type="text" name="categoryDescription" placeholder="Description" className="mb-2" />
+
+          <Button>Guardar Categoria</Button>
+        </form>
+      </div>
+    </>
+  )
+}
+
+
+
+export default async function RestaurantDishesLayout({ children, params }: Props) {
 
   const categories = await prisma.category.findMany({
     where: {
@@ -72,45 +118,8 @@ export default async function RestaurantDishesLayout({ children, params }: Props
         </div>
 
         <div className="w-2/12">
-          <div className="mb-10">
-            <h3 className="text-xl mb-2">Añadir plato</h3>
-            <form action={createDishe}>
-              <input type="hidden" name="id" />
-              <Input type="text" name="name" placeholder="Nombre del palto" className="mb-2" />
-              <Input type="text" name="description" placeholder="Description breve del plato" className="mb-2" />
-              <Input type="number" step={0.01} min={0} name="price" placeholder="Precio" className="mb-2" />
-
-              <Select name="category">
-                <SelectTrigger className="mb-2 w-full">
-                  <SelectValue placeholder="Categoria" />
-                </SelectTrigger>
-                <SelectContent>
-                  {
-                    categories.map(category => (
-                      <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
-                    ))
-                  }
-                </SelectContent>
-              </Select>
-
-              <Button>Guardar Plato</Button>
-            </form>
-          </div>
-
-          <div className="mb-10">
-            <h3 className="text-xl mb-2">Añadir categoria</h3>
-            <form action={createCategory}>
-              <Input type="text" name="categoryName" placeholder="Nombre" className="mb-2" />
-              <Input type="text" name="categoryDescription" placeholder="Description" className="mb-2" />
-
-              <Button>Guardar Categoria</Button>
-            </form>
-          </div>
-
-
+          <Aside id={params.id} categories={categories} />
         </div>
-
-
       </div>
 
     </section>

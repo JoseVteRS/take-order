@@ -22,7 +22,7 @@ export default async function RestaurantItemLayout({ children, params }: Props) 
 
     return (
         <section className="flex">
-            <aside className="min-w-[150px] dark:bg-neutral-900 dark:text-white bg-neutral-50 h-screen">
+            <aside className="min-w-[200px] dark:bg-neutral-900 dark:text-white bg-neutral-50 h-screen">
                 <NavAdminAside id={params.id} />
             </aside>
             <div className="w-full">
