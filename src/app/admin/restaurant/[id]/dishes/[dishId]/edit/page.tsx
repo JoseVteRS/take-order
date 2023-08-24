@@ -47,8 +47,8 @@ export default async function RestaurantDisheEditPage({ params }: Param) {
             }
         })
 
-        revalidatePath(`restaurant/${params.id}/dishes`)
-        redirect(`restaurant/${params.id}/dishes`)
+        revalidatePath(`/admin/restaurant/${params.id}/dishes`)
+        redirect(`/admin/restaurant/${params.id}/dishes`)
     }
 
     if (!dish) {

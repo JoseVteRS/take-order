@@ -23,7 +23,7 @@ import { Category, Dishe } from "@prisma/client";
 import { Pen, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { VisibilitySwitch } from "./[dishId]/active";
 
 import { revalidatePath } from "next/cache";
@@ -75,7 +75,6 @@ const DisheRow = ({ dish, params }: DishItemProps) => {
     revalidatePath(`/admin/restaurant/${params.id}/dishes`)
     redirect(`/admin/restaurant/${params.id}/dishes`)
   }
-
 
   return (
     <TableRow>
@@ -141,29 +140,19 @@ type Props = {
 
 export default async function RestaurantDishesPage({ params }: Props) {
 
-  const restaurant = await prisma.restaurant.findFirst({
-    where: {
-      id: params.id
-    }
-  })
-
   const dishes = await prisma.dishe.findMany({
     where: {
       restaurantId: params.id
+    },
+    orderBy: {
+      category: {
+        name: 'asc'
+      }
     },
     include: {
       category: true
     }
   })
-
-  const categories = await prisma.category.findMany({
-    where: {
-      restaurantId: params.id
-    }
-  })
-
-
-  if (!restaurant) { return notFound() }
 
   return (
     <div>
