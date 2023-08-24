@@ -1,14 +1,5 @@
+
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -17,16 +8,15 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
+
 import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
 import { Category, Dishe } from "@prisma/client";
-import { Pen, Trash } from "lucide-react";
-import Image from "next/image";
+import { Pen } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { VisibilitySwitch } from "./[dishId]/active";
 
-import { revalidatePath } from "next/cache";
+import { AlertDelete } from "./alert";
 
 
 type DishItemProps = {
@@ -39,43 +29,7 @@ type DishItemProps = {
   }
 }
 
-
-const Dishe = ({ dish, params }: DishItemProps) => {
-
-  return (
-    <Link key={dish.id} href={`/restaurant/${params.id}/dishes/${dish.id}`}>
-      <article >
-        <div className="flex dishs-end justify-between gap-3 my-4">
-          <div className="w-2/3">
-            <span className="text-sm font-semibold">{dish.name}</span>
-            <p className="text-sm text-green-700">{normalizePrice(dish.price)}{' '}€</p>
-            <p className=" text-sm text-neutral-500 text">{dish.description}</p>
-          </div>
-          <div className="rounded-sm overflow-hidden w-[88px] h-[88px] relative">
-            <Image alt="asdf" src="/pizza.jpg" height={88} width={88} className="object-cover absolute min-h-full" />
-          </div>
-        </div>
-      </article>
-    </Link>
-  )
-}
-
-
-
 const DisheRow = ({ dish, params }: DishItemProps) => {
-  async function deleteDish() {
-    'use server'
-
-    await prisma.dishe.deleteMany({
-      where: {
-        id: dish.id
-      }
-    })
-
-    revalidatePath(`/admin/restaurant/${params.id}/dishes`)
-    redirect(`/admin/restaurant/${params.id}/dishes`)
-  }
-
   return (
     <TableRow>
       <TableCell className="relative h-[60px] w-[60px]">
@@ -97,25 +51,7 @@ const DisheRow = ({ dish, params }: DishItemProps) => {
             <Pen size={16} />
           </Link>
 
-          <Dialog>
-            <DialogTrigger>
-              <Trash size={16} className="text-red-700" />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>¿Seguro que quieres eliminar el plato?</DialogTitle>
-                <DialogDescription>
-                  Esta acción será permanente y no se podrá recuperar.
-                  Puedes marcar el plato como oculto si no quieres que se muestre en la carta.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <form action={deleteDish}>
-                  <Button type="submit" variant="destructive">Eliminar</Button>
-                </form>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <AlertDelete id={dish.id} />
 
           <Button asChild variant="link" size="icon">
             <Link href={`/restaurant/${params.id}/dishes/${dish.id}`}>
@@ -165,20 +101,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
         </Button>
       </header>
       <div>
-        <div>
-          <div className="flex gap-3">
-
-            <div>
-
-            </div>
-
-            <div className="w-1/2">
-              <Input placeholder="Buscar plato" />
-            </div>
-          </div>
-        </div>
         <Table>
-          {/* <TableCaption>Tu platos</TableCaption> */}
           <TableHeader>
             <TableRow>
               <TableHead className="w-[88px]"></TableHead>
@@ -192,16 +115,30 @@ export default async function RestaurantDishesPage({ params }: Props) {
           </TableHeader>
           <TableBody>
             {
-              dishes.map(dish => {
-                return (
-                  <DisheRow key={dish.id} dish={dish} params={params} />
-                )
-              })
+              dishes.length === 0 ? (<TableRow>
+                <TableCell className="" colSpan={7}>
+                  <div className="bg-neutral-100 p-5 rounded text-center">
+                    <span className="text-xl">No hay nada aqui</span>
+                  </div>
+                </TableCell>
+              </TableRow>) : (
+                <>
+                  {
+                    dishes.map(dish => {
+                      return (
+                        <DisheRow key={dish.id} dish={dish} params={params} />
+                      )
+                    })
+                  }
+                </>
+              )
             }
+
           </TableBody>
         </Table>
+
       </div>
 
-    </div>
+    </div >
   );
 }
