@@ -4,10 +4,10 @@ import path from 'path'
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import crypto from 'crypto'
-import cloudinary from 'cloudinary'
+import {v2 as cloudinary} from 'cloudinary'
 
 
-cloudinary.v2.config({
+cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
@@ -17,14 +17,15 @@ cloudinary.v2.config({
 
 async function uploadImageToCloudinary(file: any) {
 
-  
 
-  const image = await cloudinary.v2.uploader.upload(file, {
+  const image = await cloudinary.uploader.upload(file, {
     folder: 'dish',
     use_filename: true,
     unique_filename: true,
     overwrite: true,
   })
+
+  console.log('CloudinaryImage', image)
 
   return image
 }
@@ -46,9 +47,11 @@ async function saveImageToLocal(formData: any) {
 
       // const temdir = os.tmpdir()
       // const uploadDir = path.join(temdir, `/${name}.${ext}`) // Works in vercel
-      console.log('uploadDir', uploadDir);
 
       fs.writeFile(uploadDir, buffer)
+
+      console.log({ filepath: uploadDir, filename: file.name })
+
       return { filepath: uploadDir, filename: file.name }
 
     })
@@ -60,7 +63,6 @@ export async function uploadImage(formData: any) {
   try {
 
     const newFile = await saveImageToLocal(formData)
-
     const image = await uploadImageToCloudinary(newFile[0].filepath)
 
     console.log('image', { newFile, image });

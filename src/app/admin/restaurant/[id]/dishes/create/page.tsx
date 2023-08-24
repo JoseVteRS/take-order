@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Category } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
@@ -34,7 +34,7 @@ type CategoryOption = {
 
 export default function RestaurantDishCreatePage({ params }: Props) {
   // const cld = new Cloudinary({ cloud: { cloudName: 'ddkimmrqv' } });
-  const [files, setFiles] = useState()
+  const [file, setFile] = useState<File>()
 
   const [categories, setCategories] = useState<CategoryOption[]>([])
 
@@ -82,14 +82,15 @@ export default function RestaurantDishCreatePage({ params }: Props) {
   const onSubmitUploadImage = async () => {
     const formData = new FormData()
 
-    formData.append('files', files)
+    formData.append('files', file)
 
     const res = await uploadImage(formData)
 
   }
 
-  const handleChangeImage = (e) => {
-    setFiles(e.target.files[0])
+  const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e?.currentTarget?.files) throw new Error('No files selected')
+    setFile(e.currentTarget.files[0])
   }
 
   useEffect(() => {
@@ -179,13 +180,12 @@ export default function RestaurantDishCreatePage({ params }: Props) {
           <div className="mt-2">
             <div className="">
               <div>
-
                 {
-                  files && <img src={URL.createObjectURL(files)} className="rounded-lg mb-2" />
+                  file && <img src={URL.createObjectURL(file)} className="rounded-lg mb-2" />
                 }
 
                 <form action={onSubmitUploadImage}>
-                  <Input type="file" accept="image/*" onChange={handleChangeImage} />
+                  <Input type="file" accept="image/*" onChange={(event) => handleChangeImage(event)} />
                   <Button className="mt-2">Subir imagen</Button>
                 </form>
               </div>
