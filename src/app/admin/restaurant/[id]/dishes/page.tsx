@@ -1,12 +1,4 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,9 +7,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
 import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
 import { Category, Dishe } from "@prisma/client";
@@ -28,7 +27,6 @@ import { notFound, redirect } from "next/navigation";
 import { VisibilitySwitch } from "./[dishId]/active";
 
 import { revalidatePath } from "next/cache";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@radix-ui/react-select";
 
 
 type DishItemProps = {
@@ -94,20 +92,15 @@ const DisheRow = ({ dish, params }: DishItemProps) => {
         <VisibilitySwitch visibility={dish.active} id={dish.id} />
       </TableCell>
       <TableCell>
-        <div className="flex gap-2">
-          <Link href={`/restaurant/${params.id}/dishes/${dish.id}/edit`}>
-            <Button asChild variant="ghost" size="icon">
-              <Link href={'#'}>
-                <Pen size={16} />
-              </Link>
-            </Button>
+        <div className="flex gap-3">
+
+          <Link href={`/admin/restaurant/${params.id}/dishes/${dish.id}/edit`} className="grid place-content-center">
+            <Pen size={16} />
           </Link>
 
           <Dialog>
             <DialogTrigger>
-              <Button variant="ghost" size="icon">
-                <Trash size={16} className="text-red-700" />
-              </Button>
+              <Trash size={16} className="text-red-700" />
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

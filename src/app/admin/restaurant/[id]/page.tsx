@@ -32,7 +32,7 @@ export default async function RestaurantDetailPage({ params }: Props) {
     return (
         <div className="p-4">
             <div className="grid grid-cols-2 gap-4">
-                <div className="border rounded p-4" >
+                <div className="border rounded p-4">
                     <div className="flex items-center gap-2 justify-around">
                         <span className="block font-bold text-lg">Platos</span>
                         <p className="text-xl">{dishes.length}</p>

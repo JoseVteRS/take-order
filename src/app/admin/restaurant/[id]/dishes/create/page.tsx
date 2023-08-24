@@ -1,14 +1,12 @@
 'use client'
+import { uploadImage } from "@/actions/uploadAction";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Category } from "@prisma/client";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm, SubmitHandler, set } from "react-hook-form"
-import { Cloudinary } from "@cloudinary/url-gen";
-import { uploadImage } from "@/actions/uploadAction";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   params: {
@@ -124,7 +122,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
                   {...createDish.register('name')}
                   type="text"
                   placeholder="Nombre del plato"
-                  className="text-xl mb-2"
+                  className="text-xl font-semibold mb-2"
                 />
                 <Input
                   {...createDish.register('price')}
