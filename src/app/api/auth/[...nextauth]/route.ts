@@ -9,33 +9,31 @@ import { verifySha512 } from "ldap-sha512";
 
 const nextOptions: NextAuthOptions = {
   providers: [
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID || "",
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    // }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" }
+        email: { label: "email", type: "email", placeholder: "test@test.com" },
+        password: { label: "Password", type: "password" },
       },
-
-      //@ts-ignore
       async authorize(credentials) {
-        if (!credentials) throw new Error('No credentials')
-
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
+            headers: { "Content-Type": "application/json" },
           }
-        })
-        if (!user || !user.password) throw new Error('Correo y Contraseña son obligatorios')
-        const verifiedPassword = verifySha512(credentials.password, user.password)
-        if (!verifiedPassword) throw new Error('No user')
-        return user
-      }
+        );
+        const user = await res.json();
 
-    })
+        if (user.error) throw user;
+
+        return user;
+      },
+    }),
   ],
   secret: process.env.SECRET,
   session: {
