@@ -1,31 +1,38 @@
 [
     {
         "id": "1",
-        "name": "Gluten"
+        "name": "Gluten",
+        "imgSrc": "/alergenos/gluten.png"
     },
     {
         "id": "2",
-        "name": "Crustaceos"
+        "name": "Crustaceos",
+        "imgSrc": "/alergenos/crustaceos.png"
     },
     {
         "id": "3",
-        "name": "Huevos"
+        "name": "Huevos",
+        "imgSrc": "/alergenos/huevos.png"
     },
     {
         "id": "4",
-        "name": "Pescado"
+        "name": "Pescado",
+        "imgSrc": "/alergenos/pescado.png"
     },
     {
         "id": "5",
-        "name": "Cacahuetes"
+        "name": "Cacahuetes",
+        "imgSrc": "/alergenos/cacahuetes.png"
     },
     {
         "id": "6",
-        "name": "Soja"
+        "name": "Soja",
+        "imgSrc": "/alergenos/soja.png"
     },
     {
         "id": "7",
-        "name": "Lácteos"
+        "name": "Lácteos",
+        "imgSrc": "/alergenos/lacteos.png"
     },
     {
         "id": "8",

@@ -8,8 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import prisma from "@/lib/prisma";
-import { Pen, Trash } from "lucide-react";
+import { Pen } from "lucide-react";
 import Link from "next/link";
+import { CategoryDeleteButton } from "./delete-button";
 
 
 type Props = {
@@ -25,6 +26,8 @@ export default async function RestaurantCategoriesPage({ params }: Props) {
       restaurantId: params.id
     }
   })
+
+
 
   return (
     <Table>
@@ -48,9 +51,7 @@ export default async function RestaurantCategoriesPage({ params }: Props) {
                   <Link href={`/restaurant/${params.id}/categories/${cat.id}/edit`}>
                     <Pen size={16} />
                   </Link>
-                  <button className="text-red-500">
-                    <Trash size={16} />
-                  </button>
+                  <CategoryDeleteButton dishId={cat.id} />
                   <Link href={`/restaurant/${params.id}/categories/${cat.id}`}>
                     Visitar
                   </Link>

@@ -9,14 +9,15 @@ import {
   TableRow
 } from "@/components/ui/table";
 
+import ALERGENOS from "@/config/alergenos.json";
 import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
 import { Category, Dishe } from "@prisma/client";
 import { Pen } from "lucide-react";
 import Link from "next/link";
 import { VisibilitySwitch } from "./[dishId]/active";
-
 import { AlertDelete } from "./alert";
+
 
 
 type DishItemProps = {
@@ -90,8 +91,19 @@ export default async function RestaurantDishesPage({ params }: Props) {
     }
   })
 
+
   return (
     <div>
+      <ul>
+        {
+          ALERGENOS.map(item => (
+            <li key={item.id} className="flex items-center gap-1">
+              <img src={item.imgSrc} width={25} height={25} />
+              {item.name}
+              </li>
+          ))
+        }
+      </ul>
       <header className="flex items-center gap-3 mb-8">
         <h2 className="text-2xl">Platos</h2>
         <Button variant="outline" asChild>
