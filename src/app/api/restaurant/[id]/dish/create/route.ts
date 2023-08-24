@@ -1,11 +1,16 @@
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 
 
-export async function POST(req: NextRequest) {
-  const { name, description, price, restaurantId, active, category } = await req.json()
+type Params = {
+  params: { id: string }
+}
 
+export async function POST(req: NextRequest, ctx: Params) {
+  const { name, description, price, restaurantId, active, category } = await req.json()
+  const { id } = ctx.params
   try {
 
     const newDish = await prisma.dishe.create({
@@ -18,10 +23,8 @@ export async function POST(req: NextRequest) {
         restaurantId: restaurantId,
       }
     })
-    revalidatePath('/admin/restaurant/[id]/dishes')
-
-
-
+    revalidatePath(`/admin/restaurant/${id}/dishes`)
+    redirect(`/admin/restaurant/${id}/dishes`)
     return NextResponse.json({ newDish, status: 200 })
 
   } catch (error: any) {
@@ -29,7 +32,4 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Server error', status: 500 })
   }
-
-
-
 }

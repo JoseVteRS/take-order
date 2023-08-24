@@ -43,7 +43,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
 
 
   const onSubmitCreateDish: SubmitHandler<CreateDishInputs> = async (data) => {
-    const response = await fetch('/api/dish/create', {
+    const response = await fetch(`/api/restaurant/${params.id}/dish/create`, {
       method: 'POST',
       body: JSON.stringify({
         ...data,
@@ -116,9 +116,8 @@ export default function RestaurantDishCreatePage({ params }: Props) {
         <div className="w-full">
           <h2 className="mt-4 font-regular text-xl">Nuevo Plato</h2>
           <div className="mt-8" >
-
             <div className="">
-              <div className="">
+              <div className="border rounded-lg p-3">
                 <Input
                   {...createDish.register('name')}
                   type="text"

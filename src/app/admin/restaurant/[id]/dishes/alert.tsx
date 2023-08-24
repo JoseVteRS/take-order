@@ -14,13 +14,14 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
 type Props = {
-    id: string
+    id: string,
+    dishId: string
 }
 
-export const AlertDelete = ({ id }: Props) => {
+export const AlertDelete = ({ id, dishId }: Props) => {
 
     const deleteDish = async ()=> {
-        const res = await fetch(`/api/dish/${id}`, {
+        const res = await fetch(`/api/restaurant/${id}/dish/${dishId}`, {
             method: 'DELETE'
         })
 
@@ -30,7 +31,7 @@ export const AlertDelete = ({ id }: Props) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="outline" asChild><Trash size={16} className="text-red-700" /></Button>
+                <Button variant="outline"><Trash size={16} className="text-red-700" /></Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

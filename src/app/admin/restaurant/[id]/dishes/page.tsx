@@ -42,7 +42,7 @@ const DisheRow = ({ dish, params }: DishItemProps) => {
       <TableCell>{dish.category?.name}</TableCell>
       <TableCell>{normalizePrice(dish.price)}€</TableCell>
       <TableCell className="text-center">
-        <VisibilitySwitch visibility={dish.active} id={dish.id} />
+        <VisibilitySwitch visibility={dish.active} dishId={dish.id} />
       </TableCell>
       <TableCell>
         <div className="flex gap-3">
@@ -51,7 +51,7 @@ const DisheRow = ({ dish, params }: DishItemProps) => {
             <Pen size={16} />
           </Link>
 
-          <AlertDelete id={dish.id} />
+          <AlertDelete id={params.id} dishId={dish.id} />
 
           <Button asChild variant="link" size="icon">
             <Link href={`/restaurant/${params.id}/dishes/${dish.id}`}>
