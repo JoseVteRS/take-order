@@ -8,7 +8,7 @@ const links = [
     label: 'Inicio'
   },
   {
-    href: '/restaurant',
+    href: '/admin/restaurant',
     label: 'Restaurante'
   },
 ]
