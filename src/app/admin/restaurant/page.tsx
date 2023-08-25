@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { getUserSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -11,7 +12,7 @@ const Blankslate = () => {
         <p>Da de alta tu primer restaurante</p>
       </div>
       <Button asChild>
-        <Link href="/restaurant/create">
+        <Link href="/admin/restaurant/create">
           Crea tu primer restaurante
         </Link>
       </Button>
@@ -21,9 +22,11 @@ const Blankslate = () => {
 
 export default async function RestaurantsPage() {
 
+  const user = await getUserSession()
+
   const restaurants = await prisma.restaurant.findMany({
     where: {
-      tenantId: "c923e53b-7a6c-4260-9af6-7ad3d37275f1",
+      tenantId: user.tenant.id,
     },
     orderBy: {
       createdAt: "asc"

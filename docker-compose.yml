@@ -1,20 +1,32 @@
 version: '3'
 
 services:
-  timetrackerDB:
-    container_name: take-order-db
-    image: postgres:14.3
+  postgresql:
+    container_name: take_order_db
+    image: postgres:alpine
     restart: always
-    ports:
-      - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: take-order
+      POSTGRES_USER: ${POSTGRESQL_USER:-root}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:-admin}
+    ports:
+      - ${POSTGRESQL_PORT:-5432}:5432
     volumes:
-      - ./postgres:/var/lib/postgresql/data
-    networks:
-      - postgres
+      - postgresql_data:/var/lib/postgresql/data
 
-networks:
-  postgres:
-    driver: bridge
+  pgadmin:
+    container_name: take_order_pgadmin
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "8082:80"
+    depends_on:
+      - postgresql
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgresql_data:
+  pgadmin_data:

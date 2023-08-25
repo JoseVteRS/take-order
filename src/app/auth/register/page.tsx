@@ -1,61 +1,71 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { getUserSession } from "@/lib/auth";
-import prisma from "@/lib/prisma";
-import { sha512Crypt } from 'ldap-sha512';
-import { redirect } from "next/navigation";
+"use client"
 
-export default async function AuthRegisterPage() {
+import { register } from "@/actions/userAction"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
-    const user = await getUserSession()
-    
-    if(!user) redirect('/')
+const RegisterPage = () => {
+    const [name, setName] = useState<string>("test")
+    const [email, setEmail] = useState<string>("test@test.com")
+    const [password, setPassword] = useState<string>("123123")
+    const router = useRouter()
 
-    async function registerUser(data: FormData) {
-        "use server"
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
 
-        if (!data) throw new Error('Nombre, Correo electrónico y Contraseña son necesarios')
 
-        const user = await prisma.user.findUnique({
-            where: {
-                email: data.get('email') as string
-            }
+        await register({ name, email, password })
+
+        const responseNextAuth = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
         })
 
-        if (user) throw new Error('Usuario ya existe')
+        if (responseNextAuth?.error) return
 
-        const password = data.get('password') as string
-        const encryptedPassword = await sha512Crypt(password, '10')
-
-        await prisma.user.create({
-            data: {
-                name: data.get('name') as string,
-                email: data.get('email') as string,
-                password: encryptedPassword,
-
-                tenant: {
-                    create: {
-                        name: data.get('name') as string,
-                    }
-                }
-            },
-        })
-
-        redirect('/api/auth/signin')
-
+        router.push("/admin")
     }
 
     return (
-        <div className="p-5 mx-auto w-full">
-            <h1 className="text-3xl mb-5 text-center">Regístrate</h1>
-            <div className="max-w-[500px] mx-auto">
-                <form action={registerUser}>
-                    <Input className="mb-3" type="text" name="name" placeholder="Nombre" />
-                    <Input className="mb-3" type="email" name="email" placeholder="Correo electrónico" />
-                    <Input className="mb-3" type="password" name="password" placeholder="Contraseña" />
-                    <Button type="submit">Registrarme</Button>
-                </form>
-            </div>
+        <div className="max-w-[400px] mx-auto">
+            <h1>Register</h1>
+            <form onSubmit={handleSubmit}>
+                <Input
+                    type="text"
+                    placeholder="test"
+                    name="name"
+                    className="form-control mb-2"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                />
+                <Input
+                    type="email"
+                    placeholder="test@test.com"
+                    name="email"
+                    className="form-control mb-2"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                />
+                <Input
+                    type="password"
+                    placeholder="123123"
+                    name="password"
+                    className="form-control mb-2"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                />
+                <Button
+                    type="submit"
+                    className="btn btn-primary"
+                >
+                    Register
+                </Button>
+            </form>
         </div>
-    );
+    )
 }
+export default RegisterPage

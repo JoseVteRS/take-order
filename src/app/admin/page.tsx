@@ -1,4 +1,6 @@
+import { getUserSession } from "@/lib/auth";
 import Link from "next/link";
+import { ButtonLogout } from "./button-logout";
 
 
 const links = [
@@ -8,15 +10,21 @@ const links = [
   }
 ]
 
-export default function AdminPage() {
+export default async function AdminPage() {
+
+  const user = await getUserSession()
+
+  console.log('SESSION', user)
+
   return (
     <div>
-      <h1>Hello Page Admin</h1>
+      <h1>Escritorio</h1>
+      <p>User: {user.name}</p>
       <div>
         <ul>
           {
             links.map((link) => (
-              <li>
+              <li key={link.href}>
                 <Link href={link.href}>
                   {link.label}
                 </Link>
@@ -24,6 +32,10 @@ export default function AdminPage() {
             ))
           }
         </ul>
+
+        <ButtonLogout />
+
+
       </div>
     </div>
   );

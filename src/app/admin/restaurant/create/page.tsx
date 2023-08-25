@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getUserSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 
 async function createRestaurant(data: FormData) {
     'use server'
+    const user = await getUserSession()
 
     const name = data.get('name') as string
     if (!name || name === '') {
@@ -14,16 +16,19 @@ async function createRestaurant(data: FormData) {
     await prisma.restaurant.create({
         data: {
             name,
-            tenantId: 'c923e53b-7a6c-4260-9af6-7ad3d37275f1',
-            userId: '0eedefb1-6102-494d-9819-20f77a034dff'
+            tenantId: user.tenant.id,
+            userId: user.id
         }
     })
-    redirect('/restaurant')
+    redirect('/admin/restaurant')
 
 }
 
 
 export default async function RestaurantCreatePage() {
+
+
+
     return (
         <div >
             <h1 className="text-xl mb-3 text-center">Registra restaurante</h1>

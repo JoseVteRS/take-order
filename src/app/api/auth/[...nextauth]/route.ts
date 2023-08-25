@@ -1,13 +1,15 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
-import GoogleProvider from "next-auth/providers/google";
+// import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials"
 import prisma from "@/lib/prisma";
-import { session } from "@/lib/auth"
 import { verifySha512 } from "ldap-sha512";
-
+import { session } from "@/lib/auth"
 
 
 const nextOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -16,65 +18,55 @@ const nextOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-            }),
-            headers: { "Content-Type": "application/json" },
+        if (!credentials) return null
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email
           }
-        );
-        const user = await res.json();
+        })
 
-        if (user.error) throw user;
+        if (!user || !(await verifySha512(credentials.password, user.password!))) return null
 
-        return user;
+        return {
+          id: user.id,
+          tenant: {
+            id: user.tenantId
+          },
+          email: user.email,
+          name: user.name
+        }
+
       },
     }),
   ],
-  secret: process.env.SECRET,
-  session: {
-    strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60 // 30 Days
-  },
 
   callbacks: {
-    // async signIn({ account, profile }) {
-    //   if (!profile?.email) {
-    //     throw new Error('No profile')
-    //   }
 
-    //   await prisma.user.upsert({
-    //     where: {
-    //       email: profile.email
-    //     },
-    //     create: {
-    //       email: profile.email,
-    //       name: profile.name,
-    //       avatar: (profile as any).picture,
-    //       role: 'USER',
-    //       tenant: {
-    //         create: {}
-    //       }
-    //     },
-    //     update: {
-    //       name: profile.name,
-    //       avatar: (profile as any).picture
-    //     }
-    //   })
-
-    //   return true
-    // },
     session,
-    async jwt({ token, user }) {
-      console.log('JWT', { token, user })
-      return { ...token, ...user };
+
+    async jwt({ token, profile }) {
+
+    
+
+      const user = await prisma.user.findUnique({
+        where: {
+          email: token.email!
+        }
+      })
+
+      if (!user) throw new Error('User not found')
+
+      token.id = user.id
+      token.tenant = {
+        id: user.tenantId,
+      }
+
+      console.log('token-user', { token, user })
+      return token
     },
+
   },
-  debug: process.env.NODE_ENV === 'development',
 }
 
 
