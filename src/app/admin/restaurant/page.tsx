@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { getUserSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Blankslate = () => {
   return (
@@ -33,14 +32,33 @@ export default async function RestaurantsPage() {
     }
   })
 
-  if (restaurants.length > 0) {
-    redirect(`/admin/restaurant/${restaurants[0].id}`)
-  }
+  // if (restaurants.length > 0) {
+  //   redirect(`/admin/restaurant/${restaurants[0].id}`)
+  // }
 
 
   return (
     <div className="mx-auto container py-4">
-      {<Blankslate />}
+      <div>
+        <ul>
+          {
+            restaurants.map(restaurant => (
+              <li key={restaurant.id}>
+                <Link href={`/admin/restaurant/${restaurant.id}`} >{restaurant.name}</Link>
+              </li>
+            ))
+          }
+        </ul>
+
+        <Button >
+          <Link href={`/admin/restaurant/create`} >Nuevo Restaurante</Link>
+        </Button>
+
+      </div>
+      {
+        !restaurants && (< Blankslate />)
+      }
+
     </div>
   );
 }
