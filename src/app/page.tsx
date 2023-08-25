@@ -15,7 +15,7 @@ const links = [
 
 
 export default async function Home() {
-  const user = await getUserSession()
+  // const user = await getUserSession()
 
   return (
     <main className="min-h-screen">
