@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-  children: React.ReactNode
+  children: React.ReactNode,
 }
 
-export default function RootLayout({ children }: Props) {
+export default function RootLayout(props: Props) {
   return (
     <html lang="es" className='light'>
       <body>
         <main className=''>
           <SessionAuthProvider>
-            {children}
+            {props.children}
           </SessionAuthProvider>
         </main>
       </body>

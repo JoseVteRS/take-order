@@ -71,7 +71,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
 
     createCategory.reset()
     const result = await response.json()
-    console.log('result', result)
+
     setCategories([...categories, {
       value: result.newCategory.id,
       label: result.newCategory.name

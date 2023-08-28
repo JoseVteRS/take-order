@@ -1,33 +1,37 @@
 "use client"
 
+import { useState } from "react"
 import { register } from "@/actions/userAction"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { signIn } from "next-auth/react"
+import { v4 as generateUUID } from "uuid"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 
 const RegisterPage = () => {
-    const [name, setName] = useState<string>("test")
-    const [email, setEmail] = useState<string>("test@test.com")
+    const [name, setName] = useState<string>("Jose")
+    const [email, setEmail] = useState<string>("jvrs.90@gmail.com")
     const [password, setPassword] = useState<string>("123123")
     const router = useRouter()
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
+        if (!name || !email || !password) return
+        const newUser = await register({ name, email, password })
 
-        await register({ name, email, password })
-
-        const responseNextAuth = await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
+        await fetch('/api/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                name,
+                activeToken: newUser?.activeToken
+            })
         })
 
-        if (responseNextAuth?.error) return
-
-        router.push("/admin")
+        router.push("/api/auth/signin")
     }
 
     return (

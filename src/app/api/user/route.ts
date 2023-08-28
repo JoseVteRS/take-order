@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (!user?.password) return
     const hashedPassword = await verifySha512(password, user.password)
 
-    console.log('USER', user, hashedPassword)
+
 
 
     if (user && hashedPassword) {

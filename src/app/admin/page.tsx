@@ -14,8 +14,6 @@ export default async function AdminPage() {
 
   const user = await getUserSession()
 
-  console.log('SESSION', user)
-
   return (
     <div>
       <h1>Escritorio</h1>

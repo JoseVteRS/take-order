@@ -1,6 +1,11 @@
 'use server'
 import prisma from "@/lib/prisma"
 import { sha512Crypt } from "ldap-sha512"
+import { signIn } from "next-auth/react";
+import { Resend } from "resend"
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export const findOneByEmail = async (email: string) => {
     const user = await prisma.user.findUnique({
@@ -27,12 +32,8 @@ export const register = async (data: RegisterData) => {
 
     const hashedPassword = await sha512Crypt(password, '10')
 
-    console.log(data);
-    const newUser = await prisma.user.upsert({
-        where: {
-            email: email
-        },
-        create: {
+    const newUser = await prisma.user.create({
+        data: {
             name,
             email,
             password: hashedPassword,
@@ -40,10 +41,7 @@ export const register = async (data: RegisterData) => {
                 create: {}
             }
         },
-        update: {
-            name,
-            email
-        }
+
     })
 
     return newUser

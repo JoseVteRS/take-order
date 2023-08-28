@@ -42,13 +42,8 @@ const nextOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-
     session,
-
     async jwt({ token, profile }) {
-
-    
-
       const user = await prisma.user.findUnique({
         where: {
           email: token.email!
@@ -62,7 +57,6 @@ const nextOptions: NextAuthOptions = {
         id: user.tenantId,
       }
 
-      console.log('token-user', { token, user })
       return token
     },
 

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server"
 export async function POST(req: NextRequest) {
   const { name, restaurantId, } = await req.json()
 
-  console.log('Server Category', { name, restaurantId });
+ 
 
 
   try {
