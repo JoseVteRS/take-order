@@ -1,6 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { getUserSession } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ButtonLogout } from "./button-logout";
 
 
@@ -15,6 +17,17 @@ const links = [
 export default async function AdminPage() {
 
   const user = await getUserSession()
+
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id: user.id
+    }
+  })
+
+  if (findUser && !findUser.active && findUser.role !== 'ADMIN') {
+    notFound()
+    return null
+  }
 
   return (
     <aside className="max-w-[15rem] bg-neutral-100 min-h-screen border-r border-neutral-200">

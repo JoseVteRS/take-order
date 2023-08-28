@@ -1,14 +1,11 @@
 "use client"
 
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { signIn, useSession } from 'next-auth/react'
-import { getUserSession } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { login } from '@/actions/userAction'
+import { signIn, useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { useState } from 'react'
-import { isGeneratorFunction } from 'util/types'
 
 
 interface InitialStateProps {
@@ -27,7 +24,7 @@ export default function LogiPage() {
 
     const { data: user } = useSession()
 
-    if (user) redirect('/admin/')
+    if (user && user) redirect('/admin/')
 
     const [state, setState] = useState<InitialStateProps>(initialState)
 
