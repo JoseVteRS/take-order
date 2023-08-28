@@ -45,7 +45,7 @@ export default async function RestaurantsPage() {
           <header className="my-5">
             <nav>
               <ul>
-                <li className="font-semibold">Restaurantes</li>
+                <li className="font-semibold">Restaurantes • <span className="text-sm">{restaurants.length}</span></li>
               </ul>
             </nav>
           </header>
@@ -55,8 +55,10 @@ export default async function RestaurantsPage() {
             <ul>
               {
                 restaurants.map(restaurant => (
-                  <li key={restaurant.id}>
-                    <Link href={`/admin/restaurant/${restaurant.id}`} >{restaurant.name}</Link>
+                  <li key={restaurant.id} className="group">
+                    <Link href={`/admin/restaurant/${restaurant.id}`}
+                      className="group-hover:bg-neutral-200 rounded p-1 w-full block"
+                    >{restaurant.name}</Link>
                   </li>
                 ))
               }
@@ -76,8 +78,13 @@ export default async function RestaurantsPage() {
 
       </aside >
 
+      {
+        restaurants.length > 0 ? (
+          <></>
+        ) : (<Blankslate />)
+      }
 
-      <Blankslate />
+
 
     </div>
 

@@ -36,7 +36,7 @@ const IndexPage = async () => {
       <div className="grotesk mt-6 mb-16 flex items-center justify-between py-4 px-4 sm:mx-0 sm:mb-20 sm:px-0 md:px-6">
         <div className="mt-4 inline-block pb-4 pl-8">
           <a href="/" className="align-middle text-3xl font-bold text-black">
-            NINE4
+            Scan&Order
           </a>
           <div className="hidden pl-14 align-middle xl:inline-block">
             <a href="/" className="pr-12 text-xl text-black">
@@ -306,7 +306,7 @@ const IndexPage = async () => {
           </div>
           <div className="bg-white text-black">
             <div className="mx-auto flex flex-col items-center px-5 pt-56 lg:flex-row">
-              <div className="mb-16 flex flex-col text-left lg:mb-0 lg:w-1/2 lg:flex-grow lg:items-start lg:pr-16 lg:pr-6">
+              <div className="mb-16 flex flex-col text-left lg:mb-0 lg:w-1/2 lg:flex-grow lg:items-start lg:pr-16">
                 <h2 className="mb-4 text-4xl font-bold leading-none sm:text-5xl">
                   Bibendum tortor et sit convallis nec morbi.
                 </h2>
@@ -326,7 +326,7 @@ const IndexPage = async () => {
                 <div className="hidden lg:inline-block lg:w-full lg:max-w-xl">
                   <img src="/images/placeholder.png" alt="img" />
                 </div>
-                <div className="flex flex-col pt-0 text-left lg:w-1/2 lg:flex-grow lg:items-start lg:pl-16 lg:pl-24 lg:pt-24">
+                <div className="flex flex-col pt-0 text-left lg:w-1/2 lg:flex-grow lg:items-start lg:pl-24 lg:pt-24">
                   <h2 className="mb-4 text-4xl font-bold leading-none sm:text-5xl">
                     Eu diam in magna blandit sit magna dolor proin velit.
                   </h2>
@@ -392,7 +392,7 @@ const IndexPage = async () => {
                     src="/images/placeholder1.png"
                   />
                 </div>
-                <div className="items-left flex flex-col pt-16 text-left lg:w-1/2 lg:flex-grow lg:items-start lg:pl-32 lg:pl-48 lg:text-left">
+                <div className="items-left flex flex-col pt-16 text-left lg:w-1/2 lg:flex-grow lg:items-start lg:pl-48 lg:text-left">
                   <h2 className="mb-2 text-lg leading-tight text-gray-700 sm:text-lg">
                     Viverra enim diam gravida risus nisl.
                   </h2>

@@ -5,7 +5,7 @@ import SessionAuthProvider from './providers'
 
 export const metadata: Metadata = {
   title: 'Take Order',
-  description: 'Pide desde la mesa',
+  description: 'Escanea y pídelo',
 }
 
 type Props = {

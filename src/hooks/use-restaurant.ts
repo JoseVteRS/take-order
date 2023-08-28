@@ -7,11 +7,8 @@ type Return = {
 }
 
 export const useRestaurant = (id: string): Return => {
-    if (!id) { return { loading: false, restaurant: [] } };
-
     const [restaurantList, setRestaurantList] = useState<Restaurant>()
     const [loading, setLoading] = useState<boolean>(false)
-
 
     const getRestaurantById = async (): Promise<Restaurant> => {
         const response = await fetch(`/api/restaurant/${id}`)
@@ -26,6 +23,8 @@ export const useRestaurant = (id: string): Return => {
         })
         setLoading(false)
     }, [id])
+
+    if (!id) { return { loading: false, restaurant: [] } };
 
     return {
         loading,
