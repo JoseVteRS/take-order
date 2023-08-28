@@ -1,5 +1,6 @@
 import ButtonAuth from "@/components/button-auth";
 import { getUserSession } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 
 
 const links = [
@@ -15,7 +16,19 @@ const links = [
 
 
 export default async function Home() {
-  // const user = await getUserSession()
+  const user = await getUserSession()
+
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id: user.id
+    }
+  })
+
+  if(findUser && !findUser.active && findUser.role !== 'ADMIN') {
+    return (
+      <p>Error 404</p>
+    )
+  }
 
   return (
     <main className="min-h-screen">

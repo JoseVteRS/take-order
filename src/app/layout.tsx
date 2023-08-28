@@ -16,7 +16,7 @@ export default function RootLayout(props: Props) {
   return (
     <html lang="es" className='light'>
       <body>
-        <main className=''>
+        <main className='min-h-screen'>
           <SessionAuthProvider>
             {props.children}
           </SessionAuthProvider>
