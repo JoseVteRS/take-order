@@ -20,7 +20,7 @@ const nextOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials) return null
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
           where: {
             email: credentials.email
           }
@@ -44,7 +44,7 @@ const nextOptions: NextAuthOptions = {
   callbacks: {
     session,
     async jwt({ token, profile }) {
-      const user = await prisma.user.findUnique({
+      const user = await prisma.user.findFirst({
         where: {
           email: token.email!
         }

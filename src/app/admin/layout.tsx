@@ -1,3 +1,4 @@
+import { GoBack } from "@/components/go-back";
 
 export default function AdminLayout({
     children
@@ -18,6 +19,7 @@ export default function AdminLayout({
 
 
             <div className="w-full">
+                <GoBack />
                 {children}
             </div>
         </div>

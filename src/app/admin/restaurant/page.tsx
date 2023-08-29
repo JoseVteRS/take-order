@@ -64,15 +64,10 @@ export default async function RestaurantsPage() {
               }
             </ul>
           </nav>
-          {
-            restaurants.length > 0 ? (
-              <></>
-            ) : (
-              <Button >
-                <Link href={`/admin/restaurant/create`} >Nuevo Restaurante</Link>
-              </Button>
-            )
-          }
+
+          <Button >
+            <Link href={`/admin/restaurant/create`} >Nuevo Restaurante</Link>
+          </Button>
 
         </div >
 

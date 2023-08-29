@@ -9,6 +9,7 @@ import {
   TableRow
 } from "@/components/ui/table";
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ALERGENOS from "@/config/alergenos.json";
 import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
@@ -17,7 +18,6 @@ import { Pen } from "lucide-react";
 import Link from "next/link";
 import { VisibilitySwitch } from "./[dishId]/active";
 import { AlertDelete } from "./alert";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 
@@ -106,7 +106,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
                   </li>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{item.name}</p>
+                  <p>{item.label}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

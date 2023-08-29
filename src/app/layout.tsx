@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import './globals.css'
 import SessionAuthProvider from './providers'
@@ -19,6 +20,7 @@ export default function RootLayout(props: Props) {
         <main className='min-h-screen'>
           <SessionAuthProvider>
             {props.children}
+            <Toaster />
           </SessionAuthProvider>
         </main>
       </body>

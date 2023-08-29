@@ -1,12 +1,12 @@
 
+
 export default function ClientRestaurantLayout({
-    children
+    children,
 }: {
     children: React.ReactNode;
 }) {
     return (
-        <div>
-            <h1>Hello Root Layout ClientRestaurant</h1>
+        <div className="relative">
             {children}
         </div>
     );

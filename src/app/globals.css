@@ -84,4 +84,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .active {
+        @apply  border-b-2 border-yellow-400 font-semibold;
+    }
 }

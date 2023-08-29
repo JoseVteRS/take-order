@@ -1,72 +1,72 @@
 [
     {
         "id": "1",
-        "name": "Gluten",
+        "label": "Gluten",
         "imgSrc": "/alergenos/Gluten.jpg"
     },
     {
         "id": "2",
-        "name": "Crustaceos",
+        "label": "Crustaceos",
         "imgSrc": "/alergenos/Mariscos.jpg"
     },
     {
         "id": "3",
-        "name": "Huevos",
+        "label": "Huevos",
         "imgSrc": "/alergenos/Huevos.jpg"
     },
     {
         "id": "4",
-        "name": "Pescado",
+        "label": "Pescado",
         "imgSrc": "/alergenos/Pescados.jpg"
     },
     {
         "id": "5",
-        "name": "Cacahuetes",
+        "label": "Cacahuetes",
         "imgSrc": "/alergenos/Cacahuetes.jpg"
     },
     {
         "id": "6",
-        "name": "Soja",
+        "label": "Soja",
         "imgSrc": "/alergenos/Soja.jpg"
     },
     {
         "id": "7",
-        "name": "Lácteos",
+        "label": "Lácteos",
         "imgSrc": "/alergenos/Lácteos.jpg"
     },
     {
         "id": "8",
-        "name": "Frutos con cáscara",
+        "label": "Frutos con cáscara",
          "imgSrc": "/alergenos/Frutos secos.jpg"
     },
     {
         "id": "9",
-        "name": "Apio",
+        "label": "Apio",
          "imgSrc": "/alergenos/Apio.jpg"
     },
     {
         "id": "10",
-        "name": "Mostaza",
+        "label": "Mostaza",
          "imgSrc": "/alergenos/Mostaza.jpg"
     },
     {
         "id": "11",
-        "name": "Sésamo",
+        "label": "Sésamo",
          "imgSrc": "/alergenos/Sesamo.jpg"
     },
     {
         "id": "12",
-        "name": "Sulfitos",
+        "label": "Sulfitos",
          "imgSrc": "/alergenos/Sulfitos.jpg"
     },
     {
         "id": "13",
-        "name": "Altramuces",
+        "label": "Altramuces",
          "imgSrc": "/alergenos/Altramuz.jpg"
     },
     {
         "id": "14",
-        "name": "Moluscos",
+        "label": "Moluscos",
          "imgSrc": "/alergenos/Moluscos.jpg"
     }
 ]

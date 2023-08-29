@@ -6,7 +6,7 @@ const IndexPage = async () => {
 
   const user = await getUserSession()
 
-  const findUser = await prisma.user.findUnique({
+  const findUser = await prisma.user.findFirst({
     where: {
       id: user.id
     }

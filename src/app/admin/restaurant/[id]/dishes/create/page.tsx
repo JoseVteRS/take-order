@@ -1,12 +1,15 @@
 'use client'
-import { uploadImage } from "@/actions/uploadAction";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
 import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import * as z from "zod";
 
 type Props = {
   params: {
@@ -21,6 +24,7 @@ type CreateDishInputs = {
   category: string,
   categoryName: string,
   price: number,
+  allergen: string
 }
 
 type CreateCategoryInputs = {
@@ -32,6 +36,17 @@ type CategoryOption = {
   label: string
 }
 
+const FormSchema = z.object({
+  // allergens: z.array(z.string()).refine((value) => value.some((item) => item), {
+  //   message: "You have to select at least one item.",
+  // }),
+  name: z.string().refine((value) => value, { message: "Name is required" }),
+  description: z.string().optional(),
+  active: z.boolean().optional(),
+  category: z.string().refine((value) => value, { message: "Category is required" }),
+  price: z.string().refine((value) => value, { message: "Price is required" }),
+})
+
 export default function RestaurantDishCreatePage({ params }: Props) {
   // const cld = new Cloudinary({ cloud: { cloudName: 'ddkimmrqv' } });
   const [file, setFile] = useState<File>()
@@ -40,25 +55,6 @@ export default function RestaurantDishCreatePage({ params }: Props) {
 
   const createDish = useForm<CreateDishInputs>()
   const createCategory = useForm<CreateCategoryInputs>()
-
-
-  const onSubmitCreateDish: SubmitHandler<CreateDishInputs> = async (data) => {
-    const response = await fetch(`/api/restaurant/${params.id}/dish/create`, {
-      method: 'POST',
-      body: JSON.stringify({
-        ...data,
-        category: data.category,
-        active: data.active === 'on' ? true : false,
-        price: Number(data.price),
-        restaurantId: params.id
-      })
-    })
-
-    createDish.reset()
-
-    const result = await response.json()
-    return result
-  }
 
   const onSubmitCreateCategory: SubmitHandler<CreateCategoryInputs> = async (data) => {
     const response = await fetch('/api/category/create', {
@@ -82,9 +78,9 @@ export default function RestaurantDishCreatePage({ params }: Props) {
   const onSubmitUploadImage = async () => {
     const formData = new FormData()
 
-    formData.append('files', file)
+    // formData.append('files', file)
 
-    const res = await uploadImage(formData)
+
 
   }
 
@@ -110,59 +106,204 @@ export default function RestaurantDishCreatePage({ params }: Props) {
   }, [params.id])
 
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      // allergens: [],
+      name: '',
+      description: '',
+      active: false,
+      price: '0',
+      category: '',
+    },
+  })
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data)
+    try {
+
+      const response = await fetch(`/api/restaurant/${params.id}/dish/create`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: data.name,
+          // allergens: data.allergens,
+          description: data.description,
+          category: data.category,
+          active: data.active,
+          price: Number(data.price),
+          restaurantId: params.id
+        })
+      })
+
+      if (!response.ok) {
+        toast({
+          variant: 'destructive',
+          title: "Error al guardar el plato. Revisa la información e inténtalo de nuevo.",
+        })
+      }
+
+      const result = await response.json()
+      toast({
+        variant: 'success',
+        title: `Plato ${data.name} creado correctamente`
+      })
+
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: `Error del servidor: ${error.message}`
+      })
+    }
+
+  }
+
+
   return (
     <section className="flex gap-8">
-      <form className="w-full" onSubmit={createDish.handleSubmit(onSubmitCreateDish)}>
-        <div className="w-full">
-          <h2 className="mt-4 font-regular text-xl">Nuevo Plato</h2>
-          <div className="mt-8" >
-            <div className="">
-              <div className="border rounded-lg p-3">
-                <Input
-                  {...createDish.register('name')}
-                  type="text"
-                  placeholder="Nombre del plato"
-                  className="text-xl font-semibold mb-2"
-                />
-                <Input
-                  {...createDish.register('price')}
-                  type="number"
-                  step={0.01}
-                  placeholder="Precio"
-                  className="text-xl mb-2"
-                />
-                <Textarea
-                  {...createDish.register('description')}
-                  placeholder="Breve descripción" className="text-xl mt-2 mb-2" />
 
-                <select {...createDish.register('category')} className="w-full border p-1 rounded-md">
-                  {categories.map((client) => (
-                    <option value={client.value} key={client.value} >
-                      {client.label}
-                    </option>
+      <div className="w-full">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* <FormField
+              control={form.control}
+              name="allergens"
+              render={() => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base">Sidebar</FormLabel>
+                    <FormDescription>
+                      Selecciona los alérgenos que contiene el plato
+                    </FormDescription>
+                  </div>
+                  {ALERGENOS.map((item) => (
+                    <FormField
+                      key={item.id}
+                      control={form.control}
+                      name="allergens"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={item.id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, item.id])
+                                    : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item.id
+                                      )
+                                    )
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {item.label}
+                            </FormLabel>
+                          </FormItem>
+                        )
+                      }}
+                    />
                   ))}
-                </select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
 
-                <div className="flex items-center gap-3 my-3">
-                  <label htmlFor="active">Estado: </label>
-                  <Switch
-                    {...createDish.register('active')}
-                  />
-                </div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="active"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Active</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <Input type="number" step={0.10} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoria</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona una categoria" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {
+                        categories.map((category) => (
+                          <SelectItem key={category.value} value={category.value}>{category.label}</SelectItem>
+                        ))
+                      }
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      </div>
 
 
-                <div className="">
-                  <Button type="submit" className="mt-2">Publicar</Button>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </form>
-
-      <aside className="w-4/12">
+      <aside className="w-4/12" >
 
         <div className="my-5 border rounded p-5">
           <h3 className="text-xl font-regular">Nueva categoría</h3>

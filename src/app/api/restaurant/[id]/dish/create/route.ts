@@ -9,7 +9,7 @@ type Params = {
 }
 
 export async function POST(req: NextRequest, ctx: Params) {
-  const { name, description, price, restaurantId, active, category } = await req.json()
+  const { name, description, price, restaurantId, active, category, allergens } = await req.json()
   const { id } = ctx.params
   try {
 
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest, ctx: Params) {
         description: description,
         price: price * 100,
         categoryId: category,
+        allergens: ["asdfasdf", "asfjkjsos", "añskjfañkfj"],
         active: active,
         restaurantId: restaurantId,
       }

@@ -5,7 +5,7 @@ import { verifySha512 } from "ldap-sha512"
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json()
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
         where: {
             email: email
         },
