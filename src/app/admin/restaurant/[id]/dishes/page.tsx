@@ -17,6 +17,7 @@ import { Pen } from "lucide-react";
 import Link from "next/link";
 import { VisibilitySwitch } from "./[dishId]/active";
 import { AlertDelete } from "./alert";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 
@@ -94,13 +95,23 @@ export default async function RestaurantDishesPage({ params }: Props) {
 
   return (
     <div>
-      <ul>
+      <ul className="flex items-center gap-3">
         {
           ALERGENOS.map(item => (
-            <li key={item.id} className="flex items-center gap-1">
-              <img src={item.imgSrc} width={25} height={25} />
-              {item.name}
-              </li>
+            <TooltipProvider key={item.id}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <li className="">
+                    <img src={item.imgSrc} width={40} height={40} />
+                  </li>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{item.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+
           ))
         }
       </ul>

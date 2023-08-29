@@ -2,64 +2,71 @@
     {
         "id": "1",
         "name": "Gluten",
-        "imgSrc": "/alergenos/gluten.png"
+        "imgSrc": "/alergenos/Gluten.jpg"
     },
     {
         "id": "2",
         "name": "Crustaceos",
-        "imgSrc": "/alergenos/crustaceos.png"
+        "imgSrc": "/alergenos/Mariscos.jpg"
     },
     {
         "id": "3",
         "name": "Huevos",
-        "imgSrc": "/alergenos/huevos.png"
+        "imgSrc": "/alergenos/Huevos.jpg"
     },
     {
         "id": "4",
         "name": "Pescado",
-        "imgSrc": "/alergenos/pescado.png"
+        "imgSrc": "/alergenos/Pescados.jpg"
     },
     {
         "id": "5",
         "name": "Cacahuetes",
-        "imgSrc": "/alergenos/cacahuetes.png"
+        "imgSrc": "/alergenos/Cacahuetes.jpg"
     },
     {
         "id": "6",
         "name": "Soja",
-        "imgSrc": "/alergenos/soja.png"
+        "imgSrc": "/alergenos/Soja.jpg"
     },
     {
         "id": "7",
         "name": "Lácteos",
-        "imgSrc": "/alergenos/lacteos.png"
+        "imgSrc": "/alergenos/Lácteos.jpg"
     },
     {
         "id": "8",
-        "name": "Frutos con cáscara"
+        "name": "Frutos con cáscara",
+         "imgSrc": "/alergenos/Frutos secos.jpg"
     },
     {
         "id": "9",
-        "name": "Apio"
+        "name": "Apio",
+         "imgSrc": "/alergenos/Apio.jpg"
     },
     {
         "id": "10",
-        "name": "Mostaza"
+        "name": "Mostaza",
+         "imgSrc": "/alergenos/Mostaza.jpg"
     },
     {
         "id": "11",
-        "name": "Sésamo"
+        "name": "Sésamo",
+         "imgSrc": "/alergenos/Sesamo.jpg"
     },
     {
         "id": "12",
-        "name": "Sulfitos"
+        "name": "Sulfitos",
+         "imgSrc": "/alergenos/Sulfitos.jpg"
     },
     {
         "id": "13",
-        "name": "Altramuces"
+        "name": "Altramuces",
+         "imgSrc": "/alergenos/Altramuz.jpg"
     },
     {
         "id": "14",
-        "name": "Moluscos"
+        "name": "Moluscos",
+         "imgSrc": "/alergenos/Moluscos.jpg"
     }
 ]
