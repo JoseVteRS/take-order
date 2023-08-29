@@ -19,7 +19,6 @@ export async function POST(req: NextRequest, ctx: Params) {
         description: description,
         price: price * 100,
         categoryId: category,
-        allergens: ["asdfasdf", "asfjkjsos", "añskjfañkfj"],
         active: active,
         restaurantId: restaurantId,
       }
