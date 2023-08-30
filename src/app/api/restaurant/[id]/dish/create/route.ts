@@ -20,6 +20,7 @@ export async function POST(req: NextRequest, ctx: Params) {
         price: price * 100,
         categoryId: category,
         active: active,
+        allergens: allergens,
         restaurantId: restaurantId,
       }
     })

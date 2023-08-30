@@ -1,3 +1,4 @@
+import { QRCode } from "@/components/qr-code";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
@@ -50,6 +51,18 @@ export default async function RestaurantDetailPage({ params }: Props) {
                     <Button asChild className="w-full mt-2" variant="outline">
                         <Link href={`http://localhost:3000/restaurant/${params.id}/categories`}>Crear Categoria</Link>
                     </Button>
+                </div>
+
+                <div className="border rounded p-4" >
+                    <span className="block font-bold text-lg">Código QR</span>
+                    <QRCode url={`http://localhost:3000/restaurant/${params.id}`} />
+                    <Button asChild className="w-full mt-2" variant="outline">
+                        <Link href={`http://localhost:3000/restaurant/${params.id}/categories`}>Crear Categoria</Link>
+                    </Button>
+                </div>
+
+                <div>
+                   
                 </div>
             </div>
 

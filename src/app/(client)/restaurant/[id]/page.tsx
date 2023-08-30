@@ -1,24 +1,24 @@
 import { Separator } from "@/components/ui/separator";
+import { findAllergens } from "@/lib/find-allergents";
 import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 import { Dishe } from "@prisma/client";
 import { Plus } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Params = {
-    id: string
+    params: { id: string }
 }
-export default async function RestaurantDishesPage({ id }: Params) {
-
+export default async function RestaurantDishesPage({ params }: Params) {
 
     const dishes = await prisma.dishe.findMany({
         where: {
-            restaurantId: id
+            restaurantId: params.id
         }
     })
-    console.log(dishes)
 
     if (dishes.length === 0) return notFound();
 
@@ -31,7 +31,7 @@ export default async function RestaurantDishesPage({ id }: Params) {
                 {
                     dishes.map((dish: Dishe, index) => (
 
-                        <Link href={`/restaurant/${id}/dish/${dish.id}`} key={dish.id}>
+                        <Link href={`/restaurant/${params.id}/dishes/${dish.id}`} key={dish.id}>
                             <article className={cn('pl-1', {
                                 ['border-l-2 pl-1 border-sky-400']: index % 2 === 0
                             })} >
@@ -43,7 +43,27 @@ export default async function RestaurantDishesPage({ id }: Params) {
                                         <div>
                                             <h2 className="text-sm">{dish.name}</h2>
                                             <p className="text text-gray-400 text-sm max-w-[150px]">{dish.description}</p>
-                                        </div>            
+
+                                            {
+                                                !(dish.allergens.length === 0) ? (
+                                                    <ul className="flex items-center gap-1 mt-1">
+                                                        {
+                                                            dish.allergens.map((allergen) => (
+                                                                <li key={findAllergens(allergen)!.id} >
+                                                                    <Image
+                                                                        src={findAllergens(allergen)!.imgSrc}
+                                                                        width={18} height={18}
+                                                                        alt={`Icono del alergeno ${findAllergens(allergen)!.label}`}
+                                                                    />
+                                                                </li>
+                                                            ))
+                                                        }
+
+                                                    </ul>
+                                                ) : (<></>)
+                                            }
+
+                                        </div>
                                     </div>
 
 

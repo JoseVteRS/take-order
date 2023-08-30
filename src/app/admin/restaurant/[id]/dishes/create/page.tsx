@@ -1,10 +1,12 @@
 'use client'
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
+import ALERGENOS from "@/config/alergenos.json";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -37,9 +39,9 @@ type CategoryOption = {
 }
 
 const FormSchema = z.object({
-  // allergens: z.array(z.string()).refine((value) => value.some((item) => item), {
-  //   message: "You have to select at least one item.",
-  // }),
+  allergens: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
   name: z.string().refine((value) => value, { message: "Name is required" }),
   description: z.string().optional(),
   active: z.boolean().optional(),
@@ -109,7 +111,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      // allergens: [],
+      allergens: [],
       name: '',
       description: '',
       active: false,
@@ -126,7 +128,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
         method: 'POST',
         body: JSON.stringify({
           name: data.name,
-          // allergens: data.allergens,
+          allergens: data.allergens,
           description: data.description,
           category: data.category,
           active: data.active,
@@ -144,7 +146,6 @@ export default function RestaurantDishCreatePage({ params }: Props) {
 
       const result = await response.json()
       toast({
-        variant: 'success',
         title: `Plato ${data.name} creado correctamente`
       })
 
@@ -164,7 +165,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
       <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* <FormField
+            <FormField
               control={form.control}
               name="allergens"
               render={() => (
@@ -211,7 +212,7 @@ export default function RestaurantDishCreatePage({ params }: Props) {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             <FormField
               control={form.control}
