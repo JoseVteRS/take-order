@@ -166,49 +166,58 @@ export default function RestaurantDishCreatePage({ params }: Props) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
+
               control={form.control}
               name="allergens"
               render={() => (
                 <FormItem>
                   <div className="mb-4">
-                    <FormLabel className="text-base">Sidebar</FormLabel>
+                    <FormLabel className="text-base">Alérgenos</FormLabel>
                     <FormDescription>
                       Selecciona los alérgenos que contiene el plato
                     </FormDescription>
                   </div>
-                  {ALERGENOS.map((item) => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="allergens"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item.id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(item.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, item.id])
-                                    : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item.id
+                  <div className="grid grid-cols-4 gap-2">
+                    {ALERGENOS.map((item) => (
+
+                      <FormField
+                        key={item.id}
+                        control={form.control}
+                        name="allergens"
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={item.id}
+                              className="flex flex-row items-start space-x-3 space-y-0"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...field.value, item.id])
+                                      : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item.id
+                                        )
                                       )
-                                    )
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {item.label}
-                            </FormLabel>
-                          </FormItem>
-                        )
-                      }}
-                    />
-                  ))}
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                <div className="flex items-center gap-[1px]">
+                                  <img src={item.imgSrc} className="w-5 h-5 mr-2" />
+                                  {item.label}
+                                </div>
+                              </FormLabel>
+                            </FormItem>
+                          )
+                        }}
+                      />
+
+                    ))}
+                  </div>
+
                   <FormMessage />
                 </FormItem>
               )}
