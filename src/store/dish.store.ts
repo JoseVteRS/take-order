@@ -1,14 +1,53 @@
+import { Dishe } from "@prisma/client"
 import { create } from "zustand"
+
+type OrderItem = {
+    quantity: number
+    item: Dishe
+}
 
 
 interface OrderState {
-    dishQuantity: number
-    addDisthToOrder: (by: number) => void
-    removeDishFromORder: (by: number) => void
+    total: number
+    order: OrderItem[],
+    addDisthToOrder: (dish: Dishe) => void
+
 }
 
 export const useOrderStore = create<OrderState>()((set) => ({
-    dishQuantity: 0,
-    addDisthToOrder: (by) => set((state) => ({ dishQuantity: state.dishQuantity + by })),
-    removeDishFromORder: (by) => set((state) => ({ dishQuantity: state.dishQuantity - by })),
+    total: 0,
+    order: [],
+    addDisthToOrder: (dish: Dishe) => set((state) => {
+
+        const dishInOrder = state.order.some(d => d.item.id === dish.id)
+        if (!dishInOrder) {
+            return {
+                total: 0,
+                order: [
+                    ...state.order,
+                    {
+                        item: dish,
+                        quantity: 1
+                    }
+                ]
+            }
+        }
+        
+        const updateItems = state.order.map(p => {
+            if (p.item.id !== dish.id) return p
+            
+            // Actualizar la cantidad
+            p.quantity += 1
+            return p
+        });
+
+        return {
+            total: 0,
+            order: [
+                ...updateItems
+            ]
+        }
+
+
+    }),
 }))

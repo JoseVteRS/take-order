@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DishControl } from "./dishes/dish-controls";
+import { OrderItemsStore } from "./order-items-store";
 
 type Params = {
     params: { id: string }
@@ -17,6 +18,9 @@ export default async function RestaurantDishesPage({ params }: Params) {
     const dishes = await prisma.dishe.findMany({
         where: {
             restaurantId: params.id
+        },
+        include: {
+            category: true
         }
     })
 
@@ -31,7 +35,7 @@ export default async function RestaurantDishesPage({ params }: Params) {
                 {
                     dishes.map((dish: Dishe, index) => {
 
-                        return dish.active &&  (
+                        return dish.active && (
                             <Link href={`/restaurant/${params.id}/dishes/${dish.id}`} key={dish.id}>
                                 <article className={cn('pl-1', {
                                     ['border-l-2 pl-1 border-sky-400']: index % 2 === 0
@@ -70,7 +74,7 @@ export default async function RestaurantDishesPage({ params }: Params) {
 
                                         <div className="flex flex-col gap-4 items-end justify-between">
                                             <span>{normalizePrice(dish.price)} €</span>
-                                            <DishControl />
+                                            <DishControl dish={dish} />
                                         </div>
                                     </div>
                                 </article>
@@ -82,6 +86,7 @@ export default async function RestaurantDishesPage({ params }: Params) {
                 }
 
             </div>
+            <OrderItemsStore />
         </div>
     );
 }

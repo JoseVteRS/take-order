@@ -1,17 +1,17 @@
 "use client"
 
 import { useOrderStore } from "@/store/dish.store"
+import { Dishe } from "@prisma/client"
 import { Plus } from "lucide-react"
 
-export const DishControl = () => {
+export const DishControl = ({ dish }: { dish: Dishe }) => {
 
-    const quantity = useOrderStore((state) => state.dishQuantity)
     const increase = useOrderStore((state) => state.addDisthToOrder)
-    const decrease = useOrderStore((state) => state.removeDishFromORder)
+
 
     const handleIncrease = (e: any) => {
         e.preventDefault()
-        increase(1)
+        increase(dish)
     }
 
     return (

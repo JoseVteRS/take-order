@@ -44,22 +44,43 @@ model Restaurant {
   dishes     Dishe[]
   tenant     Tenant     @relation(fields: [tenantId], references: [id])
   user       User       @relation(fields: [userId], references: [id])
+  // orders      Order[]
 }
 
 model Dishe {
-  id           String     @id @default(dbgenerated("concat('dis_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
+  id           String        @id @default(dbgenerated("concat('dis_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
   name         String
   description  String?
-  price        Int        @default(0)
-  active       Boolean    @default(true)
-  restaurantId String
-  categoryId   String?
+  price        Int           @default(0)
+  active       Boolean       @default(true)
   allergens    String[]
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
-  category     Category?  @relation(fields: [categoryId], references: [id])
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?     @updatedAt
+  category     Category?     @relation(fields: [categoryId], references: [id])
+  categoryId   String?
+  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  // dishInOrders  DishInOrder[]
 }
+
+// model Order {
+//   id           String        @id @default(dbgenerated("concat('ord_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
+//   createdAt    DateTime      @default(now())
+//   updatedAt    DateTime?     @updatedAt
+//   totalPrice   Int           @default(0)
+//   dishes       DishInOrder[]
+//   restaurantId String
+//   restaurant   Restaurant    @relation(fields: [restaurantId], references: [id])
+// }
+
+// model DishInOrder {
+//   id       String @id @default(dbgenerated("concat('dio_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
+//   quantity Int
+//   dishId   String
+//   dish     Dishe  @relation(fields: [dishId], references: [id])
+//   orderId  String
+//   order    Order  @relation(fields: [orderId], references: [id])
+// }
 
 model Category {
   id           String     @id @default(dbgenerated("concat('cat_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
