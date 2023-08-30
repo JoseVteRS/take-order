@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { findAllergens } from "@/lib/find-allergents";
+import { groupedByCategory } from "@/lib/group-dishes-by-category";
 import { normalizePrice } from "@/lib/normalize-price";
 import prisma from "@/lib/prisma";
 import { cn } from "@/lib/utils";
@@ -21,10 +22,18 @@ export default async function RestaurantDishesPage({ params }: Params) {
         },
         include: {
             category: true
+        },
+        orderBy: {
+            category: {
+                name: 'asc'
+            }
         }
     })
 
     if (dishes.length === 0) return notFound();
+
+    const dishesGroupedByCategory = groupedByCategory(dishes)
+    console.log(dishesGroupedByCategory)
 
 
     return (
@@ -86,7 +95,7 @@ export default async function RestaurantDishesPage({ params }: Params) {
                 }
 
             </div>
-            <OrderItemsStore />
+            <OrderItemsStore restaurantId={params.id} />
         </div>
     );
 }
