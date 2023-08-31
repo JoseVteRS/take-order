@@ -56,9 +56,9 @@ export const Dishes = ({ dishes, restaurantId }: Props) => {
 
                                     <div className="flex flex-col gap-4 items-end justify-between">
                                         <span>{normalizePrice(dish.price)} €</span>
-                                        <DishControl dish={dish} />
                                     </div>
                                 </div>
+                                <DishControl dish={dish} />
                             </article>
 
                             {
