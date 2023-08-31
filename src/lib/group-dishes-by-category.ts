@@ -1,10 +1,10 @@
 import { Category, Dishe } from "@prisma/client";
 
-type DisheWithCategory = {
+export type DisheWithCategory = {
     category: Category | null
 } & Dishe | null
 
-type GroupedCategory = {
+export type GroupedCategory = {
     category: { id: string, name: string };
     items: DisheWithCategory[];
 }

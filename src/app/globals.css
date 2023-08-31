@@ -86,6 +86,14 @@
     }
 
     .active {
-        @apply  border-b-2 border-yellow-400 font-semibold;
+        @apply border-b-2 border-yellow-400 font-semibold;
     }
+}
+
+html {
+    scroll-padding-top: calc(40px + 56px + 5px);
+}
+
+.active-scroll-spy {
+    border-bottom: 5px solid orange;
 }

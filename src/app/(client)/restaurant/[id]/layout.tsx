@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { BadgeCheck, ShoppingBagIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
+import { CategoryNavbarItem } from "./category-navbar-item";
 import { OrderQuantityStore } from "./order-quantity-store";
 
 type Params = {
@@ -30,8 +31,8 @@ export default async function RestaurantDishLayout({
     if (!restaurant) notFound()
 
     return (
-        <div>
-            <header className="shadow w-full sticky container mx-auto p-2 text-neutral-900 bg-neutral-50">
+        <div className="relative">
+            <header className="shadow w-full sticky top-0 container mx-auto p-2 text-neutral-900 bg-neutral-50 ">
                 <nav className="flex items-center justify-between">
 
                     <GoBack />
@@ -47,13 +48,11 @@ export default async function RestaurantDishLayout({
                 </nav>
             </header>
 
-            <nav className="overflow-x-scroll py-2">
+            <nav className="overflow-x-scroll py-2 sticky top-[39px] bg-white">
                 <ul className="flex space-x-4 ">
                     {
                         categories.map((category) => (
-                            <li key={category.id}>
-                                <a href={`#${category.id}`} className="inline-block py-2 px-4 text-neutral-900 hover:text-neutral-900 hover:bg-neutral-100 rounded">{category.name}</a>
-                            </li>
+                            <CategoryNavbarItem category={category} />
                         ))
                     }
                 </ul>

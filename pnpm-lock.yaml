@@ -97,6 +97,9 @@ dependencies:
   react-hook-form:
     specifier: 7.45.4
     version: 7.45.4(react@18.2.0)
+  react-ui-scrollspy:
+    specifier: 2.3.0
+    version: 2.3.0(react-dom@18.2.0)(react@18.2.0)
   resend:
     specifier: 1.0.0
     version: 1.0.0
@@ -3515,6 +3518,16 @@ packages:
       invariant: 2.2.4
       react: 18.2.0
       tslib: 2.6.1
+    dev: false
+
+  /react-ui-scrollspy@2.3.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Z4oEFSdwyHYYWo8deOtKSPvdZXkTUUFSkM/Rnww4jiRlBMyubXf5OBauWC0Y0w/w6VTyMlCuZwRKxrrc5khUFg==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:
