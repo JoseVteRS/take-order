@@ -48,17 +48,17 @@ model Restaurant {
 }
 
 model Dishe {
-  id           String        @id @default(dbgenerated("concat('dis_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
+  id           String     @id @default(dbgenerated("concat('dis_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
   name         String
   description  String?
-  price        Int           @default(0)
-  active       Boolean       @default(true)
-  allergens    String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime?     @updatedAt
-  category     Category?     @relation(fields: [categoryId], references: [id])
+  price        Int        @default(0)
+  active       Boolean    @default(true)
+  allergens    String[]   @default([])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  category     Category?  @relation(fields: [categoryId], references: [id])
   categoryId   String?
-  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String
   // dishInOrders  DishInOrder[]
 }
