@@ -25,6 +25,9 @@ export default async function RestaurantDishLayout({
     const categories = await prisma.category.findMany({
         where: {
             restaurantId: id
+        },
+        orderBy: {
+            name: 'asc'
         }
     })
 
