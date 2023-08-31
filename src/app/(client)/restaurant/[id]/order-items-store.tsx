@@ -19,7 +19,7 @@ export const OrderItemsStore = ({ restaurantId }: { restaurantId: string }) => {
                             <ul>
                                 {
                                     item.items.map(item => (
-                                        <li key={item.item.id}>{item.item.name} ({item.quantity})</li>
+                                        <li key={item.item.id}> {item.quantity} • {item.item.name}</li>
                                     ))
                                 }
                             </ul>
