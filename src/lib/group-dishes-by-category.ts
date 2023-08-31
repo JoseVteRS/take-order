@@ -1,37 +1,36 @@
-import { Dishe } from "@prisma/client";
+import { Category, Dishe } from "@prisma/client";
 
 type DisheWithCategory = {
+    category: Category | null
+} & Dishe | null
 
-    category: {
-        id: string;
-        name: string;
-        description: string | null;
-        createdAt: Date;
-        updatedAt: Date | null;
-        restaurantId: string;
-    } | null;
-} & {
-    id: string;
-    name: string;
-    description: string | null;
-    updatedAt: Date | null;
+type GroupedCategory = {
+    category: { id: string, name: string };
+    items: DisheWithCategory[];
 }
 
 
+export function groupByCategory(arr: DisheWithCategory[]): GroupedCategory[] {
+    const groupedByCategory: Record<string, GroupedCategory> = arr.reduce(
+        (acc, item) => {
 
-export const groupedByCategory = (data: DisheWithCategory[]) => {
-    data.reduce((result, item) => {
-        const categoryId = item.category?.id;
+            const categoryId = item!.category?.id || "__uncategorized";
 
-        if (!result[categoryId]) {
-            result[categoryId] = {
-                category: item,
-                items: []
-            };
-        }
+            if (!acc[categoryId]) {
+                acc[categoryId] = {
+                    category: { id: item!.category!.id, name: item!.category?.name || "Uncategorized" },
+                    items: [],
+                };
+            }
 
-        result[categoryId].items.push(item);
+            if (item!.category) {
+                acc[categoryId].items.push(item);
+            }
+            return acc;
+        },
+        {} as Record<string, GroupedCategory>
+    );
 
-        return result;
-    }, {});
+    const groupedArray: GroupedCategory[] = Object.values(groupedByCategory);
+    return groupedArray;
 }

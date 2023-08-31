@@ -1,9 +1,7 @@
 "use client"
 
-import { QRCode } from "@/components/qr-code"
 import { groupItemsByCategory } from "@/lib/group-order-by-category"
 import { useOrderStore } from "@/store/dish.store"
-import { v4 } from "uuid"
 
 export const OrderItemsStore = ({ restaurantId }: { restaurantId: string }) => {
 
@@ -30,7 +28,7 @@ export const OrderItemsStore = ({ restaurantId }: { restaurantId: string }) => {
                 }
             </ul>
 
-            <QRCode url={`http://localhost:3000/restaurant/${restaurantId}?order=${v4()}`} />
+            {/* <QRCode url={`http://localhost:3000/restaurant/${restaurantId}?order=${v4()}`} /> */}
 
         </div>
 
