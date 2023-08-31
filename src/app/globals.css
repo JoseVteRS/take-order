@@ -91,7 +91,7 @@
 }
 
 html {
-    scroll-padding-top: calc(40px + 56px + 5px);
+    scroll-padding-top: calc(40px + 56px);
 }
 
 .active-scroll-spy {

@@ -11,7 +11,7 @@ interface OrderState {
     total: number
     order: OrderItem[],
     addDisthToOrder: (dish: Dishe) => void
-
+    removeDisthToOrder: (dish: Dishe) => void
 }
 
 export const useOrderStore = create<OrderState>()((set) => ({
@@ -32,10 +32,10 @@ export const useOrderStore = create<OrderState>()((set) => ({
                 ]
             }
         }
-        
+
         const updateItems = state.order.map(p => {
             if (p.item.id !== dish.id) return p
-            
+
             // Actualizar la cantidad
             p.quantity += 1
             return p
@@ -47,7 +47,36 @@ export const useOrderStore = create<OrderState>()((set) => ({
                 ...updateItems
             ]
         }
+    }),
+    removeDisthToOrder: (dish: Dishe) => set((state) => {
 
+        const dishInOrder = state.order.some(d => d.item.id === dish.id)
+        if (!dishInOrder) {
+            return {
+                total: 0,
+                order: [
+                    ...state.order,
+                    {
+                        item: dish,
+                        quantity: 1
+                    }
+                ]
+            }
+        }
 
+        const updateItems = state.order.map(p => {
+            if (p.item.id !== dish.id) return p
+
+            // Actualizar la cantidad
+            p.quantity -= 1
+            return p
+        });
+
+        return {
+            total: 0,
+            order: [
+                ...updateItems
+            ]
+        }
     }),
 }))
