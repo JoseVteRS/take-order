@@ -7,24 +7,24 @@ import { CategoryNavbarItem } from "./category-navbar-item";
 import { OrderQuantityStore } from "./order-quantity-store";
 
 type Params = {
-    id: string,
+    params: { id: string, }
     children: ReactNode
 }
 
 export default async function RestaurantDishLayout({
     children,
-    id
+    params
 }: Params) {
 
-    const restaurant = await prisma.restaurant.findFirst({
+    const restaurant = await prisma.restaurant.findUnique({
         where: {
-            id: id
+            id: params.id,
         }
     })
 
     const categories = await prisma.category.findMany({
         where: {
-            restaurantId: id
+            restaurantId: params.id
         },
         orderBy: {
             name: 'asc'
@@ -55,7 +55,7 @@ export default async function RestaurantDishLayout({
                 <ul className="flex space-x-4 ">
                     {
                         categories.map((category) => (
-                            <CategoryNavbarItem category={category} />
+                            <CategoryNavbarItem key={category.id} category={category} />
                         ))
                     }
                 </ul>

@@ -28,7 +28,7 @@ export const DishControl = ({ dish }: { dish: Dishe }) => {
             {orderCountItems?.quantity === 0 || orderCountItems?.quantity !== undefined && (
                 <div className="flex gap-10">
                     <button
-                        onClick={(event) => handleAddItem(event)}
+                        onClick={(event) => handleRemoveItem(event)}
                         className="bg-sky-100 text-sky-800 w-5 h-5 rounded-full flex items-center justify-center">
                         <Minus size={12} />
                     </button>

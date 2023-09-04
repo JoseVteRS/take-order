@@ -11,6 +11,8 @@ import prisma from "@/lib/prisma";
 import { Pen } from "lucide-react";
 import Link from "next/link";
 import { CategoryDeleteButton } from "./delete-button";
+import { Button } from "@/components/ui/button";
+import { EditCategory } from "./edit-category";
 
 
 type Props = {
@@ -20,6 +22,8 @@ type Props = {
 }
 
 export default async function RestaurantCategoriesPage({ params }: Props) {
+
+
 
   const categories = await prisma.category.findMany({
     where: {
@@ -48,13 +52,8 @@ export default async function RestaurantCategoriesPage({ params }: Props) {
 
               <TableCell>
                 <div className="flex gap-2">
-                  <Link href={`/restaurant/${params.id}/categories/${cat.id}/edit`}>
-                    <Pen size={16} />
-                  </Link>
+                  <EditCategory category={cat} restaurantId={params.id} />
                   <CategoryDeleteButton dishId={cat.id} />
-                  <Link href={`/restaurant/${params.id}/categories/${cat.id}`}>
-                    Visitar
-                  </Link>
                 </div>
 
               </TableCell>

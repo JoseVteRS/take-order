@@ -15,10 +15,10 @@ const links = [
         label: 'Categorias',
         href: '/categories'
     },
-    {
-        label: 'Métricas',
-        href: '/metrics'
-    }
+    // {
+    //     label: 'Métricas',
+    //     href: '/metrics'
+    // }
 ]
 
 export const NavAdminAside = ({ id }: { id: string }) => {
@@ -44,6 +44,11 @@ export const NavAdminAside = ({ id }: { id: string }) => {
                         </li>
                     ))
                 }
+                <Separator className="my-5" />
+                <li className="w-full rounded">
+                    <Link className='block p-2 dark:hover:bg-neutral-800 hover:bg-neutral-200 rounded'
+                        href='/admin/allergens'>Alergenos</Link>
+                </li>
             </ul>
             <Separator className="my-5" />
         </nav>

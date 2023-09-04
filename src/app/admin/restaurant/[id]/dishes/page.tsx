@@ -95,7 +95,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
 
   return (
     <div>
-      <ul className="flex items-center gap-3">
+      {/* <ul className="flex items-center gap-3">
         {
           ALERGENOS.map(item => (
             <TooltipProvider key={item.id}>
@@ -114,7 +114,7 @@ export default async function RestaurantDishesPage({ params }: Props) {
 
           ))
         }
-      </ul>
+      </ul> */}
       <header className="flex items-center gap-3 mb-8">
         <h2 className="text-2xl">Platos</h2>
         <Button variant="outline" asChild>
