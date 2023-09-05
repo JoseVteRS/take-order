@@ -1,18 +1,30 @@
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog"
+import { AlertDialogHeader, AlertDialogFooter } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import prisma from "@/lib/prisma"
 import { Category, Dishe } from "@prisma/client"
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction
+} from "@/components/ui/alert-dialog"
 import { Pen } from "lucide-react"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 type Props = {
- restaurantId: string,
+  restaurantId: string,
   category: Category
 }
 
 export const EditCategory = async ({ category, restaurantId }: Props) => {
 
-  
+
   const updateDish = async (data: FormData) => {
     "use server"
     const name = data.get('name') as string
@@ -38,27 +50,42 @@ export const EditCategory = async ({ category, restaurantId }: Props) => {
     toast({
       title: "Categoria actualizada",
     })
+
+    revalidatePath(`/admin/restaurant/${restaurantId}/categories`)
+    redirect(`/admin/restaurant/${restaurantId}/categories`)
+
   }
 
 
   return (
-    <>
-      <Dialog>
-        <DialogTrigger>
-          <Pen size={16} />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Nuevo nombre de categoria</DialogTitle>
-            <DialogDescription>
-              <form action={updateDish}>
-                <Input type="text" name="name" defaultValue={category.name} />
+
+    <AlertDialog >
+      <AlertDialogTrigger>
+        <Pen size={16} />
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Nuevo nombre de categoria</AlertDialogTitle>
+          <AlertDialogDescription>
+            <div >
+              <form action={updateDish} >
+                <Input className="mb-3 mt-5" type="text" name="name" defaultValue={category.name} />
+                <div className="flex" >
+                  <AlertDialogAction className="flex w-full justify-end" asChild >
+                    <Button type="submit" >Actualizar</Button>
+                  </AlertDialogAction>
+                </div>
+
               </form>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </>
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
 
   )
 }
