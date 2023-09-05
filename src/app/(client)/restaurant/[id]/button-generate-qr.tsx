@@ -22,7 +22,6 @@ export const ButtonGenerateQR = ({ restaurantId }: Props) => {
   }
 
 
-
   return (
     <>
       <Button size="lg" onClick={handleCreateOrder} className="w-full">Generar QR • 42,34 €</Button>
