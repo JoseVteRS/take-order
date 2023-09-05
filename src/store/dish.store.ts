@@ -1,9 +1,9 @@
 import { Dishe } from "@prisma/client"
 import { create } from "zustand"
 
-type OrderItem = {
+export type OrderItem = {
     quantity: number
-    item: Dishe
+    dish: Dishe
 }
 
 
@@ -19,14 +19,14 @@ export const useOrderStore = create<OrderState>()((set) => ({
     order: [],
     addDisthToOrder: (dish: Dishe) => set((state) => {
 
-        const dishInOrder = state.order.some(d => d.item.id === dish.id)
+        const dishInOrder = state.order.some(d => d.dish.id === dish.id)
         if (!dishInOrder) {
             return {
                 total: 0,
                 order: [
                     ...state.order,
                     {
-                        item: dish,
+                        dish: dish,
                         quantity: 1
                     }
                 ]
@@ -34,7 +34,7 @@ export const useOrderStore = create<OrderState>()((set) => ({
         }
 
         const updateItems = state.order.map(p => {
-            if (p.item.id !== dish.id) return p
+            if (p.dish.id !== dish.id) return p
 
             // Actualizar la cantidad
             p.quantity += 1
@@ -50,14 +50,14 @@ export const useOrderStore = create<OrderState>()((set) => ({
     }),
     removeDisthToOrder: (dish: Dishe) => set((state) => {
 
-        const dishInOrder = state.order.some(d => d.item.id === dish.id)
+        const dishInOrder = state.order.some(d => d.dish.id === dish.id)
         if (!dishInOrder) return
 
-        const updateItems = state.order.find((p) => p.item.id === dish.id)
+        const updateItems = state.order.find((p) => p.dish.id === dish.id)
         if (updateItems?.quantity === 1) {
             return {
                 total: 0,
-                order: state.order.filter((p) => p.item.id !== dish.id)
+                order: state.order.filter((p) => p.dish.id !== dish.id)
             }
         }
 

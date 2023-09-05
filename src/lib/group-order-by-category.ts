@@ -19,31 +19,31 @@ interface Item {
     };
 }
 
-interface GroupedItems {
+export interface GroupedItems {
     categoryId: string;
     categoryName: string;
     items: {
-        item: Item;
+        dish: Item;
         quantity: number;
     }[];
 }
 
 export function groupItemsByCategory(items: any[]): GroupedItems[] {
     const groupedItems = items.reduce((accumulator, currentItem) => {
-        const categoryId = currentItem.item.categoryId;
+        const categoryId = currentItem.dish.categoryId;
         const existingGroup = accumulator.find((group: GroupedItems) => group.categoryId === categoryId);
 
         if (existingGroup) {
             existingGroup.items.push({
-                item: currentItem.item,
+                dish: currentItem.dish,
                 quantity: currentItem.quantity
             });
         } else {
             const newGroup: GroupedItems = {
                 categoryId: categoryId,
-                categoryName: currentItem.item.category.name,
+                categoryName: currentItem.dish.category.name,
                 items: [{
-                    item: currentItem.item,
+                    dish: currentItem.dish,
                     quantity: currentItem.quantity
                 }],
             };

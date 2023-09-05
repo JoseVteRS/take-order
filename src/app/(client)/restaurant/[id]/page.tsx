@@ -1,6 +1,7 @@
 import { groupByCategory } from "@/lib/group-dishes-by-category";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { ButtonGenerateQR } from "./button-generate-qr";
 import { DishesScrollSpy } from "./dishes-scroll-spy";
 import { OrderItemsStore } from "./order-items-store";
 
@@ -31,11 +32,12 @@ export default async function RestaurantDishesPage({ params }: Params) {
 
 
     return (
-        <div className="px-3">
+        <div className="px-3 py-5">
 
             <DishesScrollSpy dishesGroupedByCategory={dishesGroupedByCategory} restaurantId={params.id} />
 
             <OrderItemsStore restaurantId={params.id} />
+            <ButtonGenerateQR  restaurantId={params.id} />
         </div>
     );
 }
